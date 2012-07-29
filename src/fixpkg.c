@@ -65,7 +65,7 @@ int lineindex;
 
 char termlist[1000][10];
 char prevterm[10];
-
+int firstin;
 
 void skipblanks()
  {
@@ -230,6 +230,8 @@ int main (int argc,char *argv[])
 
  {
 
+   firstin = FALSE;
+
    // printf("PKGMAP -  \n");
 
   file1 = fopen(argv[1],"r");
@@ -284,12 +286,20 @@ int main (int argc,char *argv[])
     else
       {
 
-        fprintf(file2,"%s - ", prevterm);
-        for(j=0; j < termcnt; j += 1)
+	if (firstin == TRUE)
 	  {
-	    fprintf(file2,"%s ",termlist[j]);
+           fprintf(file2,"%s - ", prevterm);
+           for(j=0; j < termcnt; j += 1)
+	    {
+	     fprintf(file2,"%s ",termlist[j]);
+             }
+           fprintf(file2,".\n");
           }
-        fprintf(file2,".\n");
+	else
+          {
+            firstin=TRUE;
+          }
+
         termcnt = 0;
         strncpy(termlist[termcnt],boolterm,10);
         termcnt = 1;
@@ -298,7 +308,7 @@ int main (int argc,char *argv[])
 
    }
 
-   fprintf(file2,"%s ", prevterm);
+   fprintf(file2,"%s - ", prevterm);
    for(j=0; j < termcnt; j += 1)
       {
 	    fprintf(file2,"%s ",termlist[j]);
