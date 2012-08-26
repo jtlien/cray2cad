@@ -6659,7 +6659,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
 	  if (pins[1][0] != 0 )
             {
 
-             fprintf(outfile," %s = <%s ; \n",
+             fprintf(outfile," %s <= %s ; \n",
 	      pins[1],pins[3] );
 
              fprintf(outfile,"assign %s = ~%s; \n",flipcase(pins[1]),pins[1]);  
