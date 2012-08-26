@@ -7,7 +7,7 @@
 #define MAXCIRC 2024
 #define MAXBOOL 4000
 #define MAXPKGS 4000
-#define MAXLOADS 20   // loads on each boolean
+#define MAXLOADS 24  // loads on each boolean
 #define MAXRJMPS  5000   // at most 96 * 12 * 4  raw jumpers
 #define MAXBRDJMPS 1000
 #define MAXJMPS  100      // 96 
@@ -4564,7 +4564,7 @@ void parse_schip_rhs( char srcpin, int thispkgind)
 	  {
             if (groupcnt != 2)
 	      {
-		printf("Missing groups in 2 chip \n");
+		printf("Missing groups in S chip \n");
               }
             groupend = TRUE;
 
@@ -4654,6 +4654,20 @@ void parse_tchip_rhs( char srcpin, int thispkgind)
           }
 
 
+           if (linein[lineindex] == '.')
+	    {
+             groupend = TRUE;
+            }
+          else
+           {
+
+            if (linein[lineindex] == '+' )  // skip past plus
+              {
+                        lineindex+= 1;
+              }
+           }
+       
+
          if (groupend == FALSE)
 	  {
            groupcnt += 1;
@@ -4720,6 +4734,19 @@ void parse_tchip_rhs( char srcpin, int thispkgind)
            apply_terms_to_pkg(termcnt, term_array,3, thispkgind);  // 2 terms to pkg
           }
 
+
+           if (linein[lineindex] == '.')
+	    {
+             groupend = TRUE;
+            }
+          else
+           {
+
+            if (linein[lineindex] == '+' )  // skip past plus
+              {
+                        lineindex+= 1;
+              }
+           }
 
          if (groupend == FALSE)
 	  {
@@ -6512,7 +6539,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
              print_veri_pingroup(3,pin_list,ipkgind);
             }
 
-          fprintf(outfile," ; ");
+          fprintf(outfile," ; \n");
 	  fprintf(outfile,"assign %s = ~%s; \n",flipcase(pins[9]),pins[9]);  // i=~H
 	}
      
@@ -6540,7 +6567,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
              print_veri_pingroup(3,pin_list,ipkgind);
             }
 
-          fprintf(outfile," ; ");
+          fprintf(outfile," ; \n");
 	  fprintf(outfile,"assign %s = ~%s; \n",flipcase(pins[7]),pins[7]);  // i=~H
 	}     
 
@@ -8999,6 +9026,7 @@ void add_jmp_loads(int boolindex, char *jmplocstr)
 	      {
 		printf("Max loads exceeded by adding jumps for term = %s  \n",
                          output_array[i].bool);
+                printf("Load count = %d \n",loadcnt);
               }
             loadcnt += 1;
           }
