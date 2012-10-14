@@ -1,0 +1,1 @@
+cat verifile_lat | grep "<=" | cut -c1-6 | sed '1,$s/^/reg /' | sed '1,$s/$/;/' | sed '1,$s/<//' | sort  >verireg
