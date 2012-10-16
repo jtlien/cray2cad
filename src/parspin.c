@@ -25,6 +25,7 @@ FILE *outfile;
 FILE *outfile1,*outfile2,*outfile3,*outfile4,*outfile5,*outfile6;
 FILE *outfile7,*outfile8;
 FILE *outfilea,*outfileb;
+FILE *outfilec;
 
 
 
@@ -1738,11 +1739,14 @@ void apply_terms_to_pkg(int intermcnt, struct termstuff *term_array,
                     }
                   else
 		    {
+		      if (pkgarray[thispkgind].chiptype != 'U')
+			{
 		      printf("Pkg error for pkg %s with term %s overwriting %s for pin %d \n",
                            pkgarray[thispkgind].locstr, 
 			     term_array[j].bool,
                              pkgarray[thispkgind].pinterms[termpin],
 			     termpin);
+			}
 		    }
                 }
             }
@@ -4888,22 +4892,20 @@ void parse_tchip_rhs( char srcpin, int thispkgind)
      
     }  // if M output pin
 
+
   if (srcpin == 'H')
     {
-     
 
-        for(j=0; j < 2; j += 1)             // default to forced one 
+        for(j=0; j < 1; j += 1)             // default to forced one 
          {
 	  strncpy(term_array[j].bool,"ZZI",10);
          }
 
         termcnt = get_term_list();    // into term array.bool
 
-   
         term_array[0].pin = 'J';
-        term_array[1].pin = 'T';
 
-        apply_terms_to_pkg(termcnt, term_array,2, thispkgind);  // 2 terms to pkg
+        apply_terms_to_pkg(termcnt, term_array,1, thispkgind);  // 1 terms to pkg
 
     }  // if H output
               
@@ -4973,7 +4975,21 @@ void parse_uchip_rhs( char srcpin, int thispkgind)
            apply_terms_to_pkg(termcnt, term_array,4, thispkgind);  // 2 terms to pkg
           }
 
+        skipblanks();
 
+	if (linein[lineindex] == '.')
+	  {
+            groupend = TRUE;
+          }
+        else
+          {
+	    if (linein[lineindex] == '+' )  // skip past plus
+              {
+                lineindex+= 1;
+              }
+          }
+
+   
          if (groupend == FALSE)
 	  {
            groupcnt += 1;
@@ -5043,7 +5059,21 @@ void parse_uchip_rhs( char srcpin, int thispkgind)
            apply_terms_to_pkg(termcnt, term_array,4, thispkgind);  // 2 terms to pkg
           }
 
+        skipblanks();
 
+	if (linein[lineindex] == '.')
+	  {
+            groupend = TRUE;
+          }
+        else
+          {
+	    if (linein[lineindex] == '+' )  // skip past plus
+              {
+                lineindex+= 1;
+              }
+          }
+
+   
          if (groupend == FALSE)
 	  {
            groupcnt += 1;
@@ -6378,9 +6408,9 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
   if (ctype == 'G')  // 
     {
 
-      if (pins[5][0] != 0 )  // E = L & ttt | l & TTT ; where TTT = CBA
+      if (pins[6][0] != 0 )  // E = L & ttt | l & TTT ; where TTT = CBA
 	{
-          fprintf(outfilea,"assign %s = %s & ~(",pins[5],pins[14]);
+          fprintf(outfilea,"assign %s = %s & ~(",pins[6],pins[14]);
 
 
            pin_list[0] = 3;  // CBA
@@ -6399,12 +6429,12 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
            print_veri_pingroupa(3,pin_list,ipkgind);
 
            fprintf(outfilea," );\n");
-           fprintf(outfilea,"assign %s = ~%s ;\n",flipcase(pins[5]),pins[5]);
+           fprintf(outfilea,"assign %s = ~%s ;\n",flipcase(pins[6]),pins[6]);
 	}
 
-      if (pins[6][0] != 0 )  // F = K & ttt | k & TTT ; where TTT = LCBA
+      if (pins[7][0] != 0 )  // F = K & ttt | k & TTT ; where TTT = LCBA
 	{
-          fprintf(outfilea,"assign %s = %s & ~(",pins[6],pins[13]);
+          fprintf(outfilea,"assign %s = %s & ~(",pins[7],pins[13]);
 
 
 	   pin_list[0] = 14;  // LCBA
@@ -6424,7 +6454,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
            print_veri_pingroupa(4,pin_list,ipkgind);
 
            fprintf(outfilea," );\n");
-           fprintf(outfilea,"assign %s = ~%s ;\n",flipcase(pins[6]),pins[6]);
+           fprintf(outfilea,"assign %s = ~%s ;\n",flipcase(pins[7]),pins[7]);
 	}
    
 
@@ -6839,6 +6869,94 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
          fprintf(outfilea,"assign %s = ~%s; \n",flipcase(pins[6]),pins[6]);  // d = ~E
 
 	}
+
+      if (pins[7][0] != 0 )
+	{
+          
+          fprintf(outfileb,"  %s <= ",pins[7]);
+         
+	  if (pins[15][0] != 0 ) //M
+	    {
+              
+	      pin_list[0] = 15;   //      // F = MNA+JL+BC
+              pin_list[1] = 16;
+              pin_list[2] = 1;
+
+              print_veri_pingroupb(3,pin_list,ipkgind);
+            }
+       
+	  if (pins[11][0] != 0 ) //J
+	    {
+              
+              fprintf(outfileb," | ");
+
+	      pin_list[0] = 11;   //      // F = MNA+JL+BC
+              pin_list[1] = 14;
+          
+              print_veri_pingroupb(2,pin_list,ipkgind);
+            }
+       
+          if (pins[2][0] != 0 )  // B
+	    {
+              fprintf(outfileb," | ");
+
+	      pin_list[0] = 2;   //      // F = MNA+JL+BC
+              pin_list[1] = 3;
+          
+              print_veri_pingroupb(2,pin_list,ipkgind);
+            }
+
+	  fprintf(outfileb," ; \n");
+                           
+                   // F = MNA+JL+BC
+
+         fprintf(outfilea,"assign %s = ~%s; \n",flipcase(pins[7]),pins[7]);  // d = ~E
+
+	}
+
+      if (pins[10][0] != 0 )
+	{
+          
+          fprintf(outfileb,"  %s <= ",pins[10]);
+         
+	  if (pins[15][0] != 0 ) //M
+	    {
+              
+	      pin_list[0] = 15;   //      // I = MNA+JL+BC
+              pin_list[1] = 16;
+              pin_list[2] = 1;
+
+              print_veri_pingroupb(3,pin_list,ipkgind);
+            }
+       
+	  if (pins[11][0] != 0 ) //J
+	    {
+              
+              fprintf(outfileb," | ");
+
+	      pin_list[0] = 11;   //      // I = MNA+JL+BC
+              pin_list[1] = 14;
+          
+              print_veri_pingroupb(2,pin_list,ipkgind);
+            }
+       
+          if (pins[2][0] != 0 )  // B
+	    {
+              fprintf(outfileb," | ");
+
+	      pin_list[0] = 2;   //      // I = MNA+JL+BC
+              pin_list[1] = 3;
+          
+              print_veri_pingroupb(2,pin_list,ipkgind);
+            }
+
+	  fprintf(outfileb," ; \n");
+                           
+                   // I = MNA+JL+BC
+
+         fprintf(outfilea,"assign %s = ~%s; \n",flipcase(pins[10]),pins[10]);  // d = ~E
+
+	}
     }  
  // N Chip
 
@@ -7040,7 +7158,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
       if (pins[1][0] != 0 )
 	{
 	  
- 	  fprintf(outfileb,"  rinst_%d ram_16x4({%s,%s,%s,%s},{%s,%s,%s,%s},{%s,%s,%s,%s}, %s, %s); \n",
+ 	  fprintf(outfilec,"ram_16x4 rinst_%d({%s,%s,%s,%s},{%s,%s,%s,%s},{%s,%s,%s,%s}, %s, %s, IZZ); \n",
 		  rchipcnt,pins[2],pins[1],pins[16],pins[15],
 	      pins[6],pins[5],pins[11],pins[13],
               pins[10],pins[9],pins[8],pins[7], pins[3],pins[14]);
@@ -7062,7 +7180,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
               pin_list[1] = 2;
               pin_list[2] = 1;
 
-              print_veri_pingroupb(3,pin_list,ipkgind);
+              print_veri_pingroupa(3,pin_list,ipkgind);
 	    }
 
           if (pins[3][0] != 0 )
@@ -7073,33 +7191,33 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
               pin_list[1] = 15;
               pin_list[2] = 1;
 
-              print_veri_pingroupb(3,pin_list,ipkgind);
+              print_veri_pingroupa(3,pin_list,ipkgind);
 	    }
 
 
           if (pins[3][0] != 0 )
             {
-	      fprintf(outfileb," | ");
+	      fprintf(outfilea," | ");
 
               pin_list[0] = 3;  // CBN
               pin_list[1] = 2;
               pin_list[2] = 16;
 
-              print_veri_pingroupb(3,pin_list,ipkgind);
+              print_veri_pingroupa(3,pin_list,ipkgind);
 	    }
 
           if (pins[3][0] != 0 )
             {
-	      fprintf(outfileb," | ");
+	      fprintf(outfilea," | ");
 
               pin_list[0] = 14;  // LMN
               pin_list[1] = 15;
               pin_list[2] = 16;
 
-              print_veri_pingroupb(3,pin_list,ipkgind);
+              print_veri_pingroupa(3,pin_list,ipkgind);
 	    }
 
-          fprintf(outfileb," ; \n");
+          fprintf(outfilea," ; \n");
 	  fprintf(outfilea,"assign %s = ~%s; \n",flipcase(pins[7]),pins[7]);  // g = ~F
 	}
 
@@ -7114,30 +7232,30 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
               pin_list[1] = 2;
               pin_list[2] = 1;
 
-              print_veri_pingroupb(3,pin_list,ipkgind);
+              print_veri_pingroupa(3,pin_list,ipkgind);
 	    }
 
           if (pins[3][0] != 0 )
             {
-	      fprintf(outfileb," | ");
+	      fprintf(outfilea," | ");
 
               pin_list[0] = 3;  // CMA
               pin_list[1] = 15;
               pin_list[2] = 1;
 
-              print_veri_pingroupb(3,pin_list,ipkgind);
+              print_veri_pingroupa(3,pin_list,ipkgind);
 	    }
 
 
           if (pins[3][0] != 0 )
             {
-	      fprintf(outfileb," | ");
+	      fprintf(outfilea," | ");
 
               pin_list[0] = 3;  // CBN
               pin_list[1] = 2;
               pin_list[2] = 16;
 
-              print_veri_pingroupb(3,pin_list,ipkgind);
+              print_veri_pingroupa(3,pin_list,ipkgind);
 	    }
 
           if (pins[3][0] != 0 )
@@ -7148,10 +7266,10 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
               pin_list[1] = 2;
               pin_list[2] = 1;
 
-              print_veri_pingroupb(3,pin_list,ipkgind);
+              print_veri_pingroupa(3,pin_list,ipkgind);
 	    }
 
-          fprintf(outfileb," ; \n");
+          fprintf(outfilea," ; \n");
 	  fprintf(outfilea,"assign %s = ~%s; \n",flipcase(pins[6]),pins[6]);  // f = ~E
 	}
      
@@ -7212,7 +7330,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
 
       if (pins[15][0] != 0 )  // M =
 	{
-	  fprintf(outfileb," %s <= ",pins[2]);
+	  fprintf(outfileb," %s <= ",pins[15]);
 
           if (pins[8][0] != 0 ) 
             {
@@ -7257,12 +7375,13 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
 	    }
 
           fprintf(outfileb," ;\n"); // M=GLE+DFE+DLC+DLE
-	  fprintf(outfilea,"assign %s = ~%s; \n",flipcase(pins[14]),pins[14]);  // n = ~M
+	  fprintf(outfilea,"assign %s = ~%s; \n",flipcase(pins[15]),pins[15]);  // n = ~M
          }
 
       if (pins[9][0] != 0 )
         {
          fprintf(outfileb," %s <= %s ; \n",pins[9],pins[11]);
+         fprintf(outfilea,"assign %s = ~%s; \n",flipcase(pins[9]),pins[9]);
         }
       // H = J
      
@@ -7270,42 +7389,84 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
 
   if (ctype == 'U')
     {
-      fprintf(outfilea,"assign %s = %s & ~%s & ~%s & %s | ",
-	      pins[7],pins[1],pins[3],pins[2],pins[6]); // F=AcbE
-      fprintf(outfileb," %s & ~%s & %s & %s | ",
-	      pins[16],pins[3],pins[2],pins[6]); // + NcBE
 
-      fprintf(outfileb," %s & %s & ~%s & %s | ",
-	      pins[13],pins[3],pins[2],pins[6]); // KCbE
+      if (pins[7][0] != 0 )   // F
+	{
+          if (pins[6][0] != 0 )
+	    {
+              fprintf(outfilea,"assign %s = %s & ~%s & ~%s & %s | ",
+	        pins[7],pins[1],pins[3],pins[2],pins[6]); // F=AcbE
+              fprintf(outfilea," %s & ~%s & %s & %s | ",
+	        pins[16],pins[3],pins[2],pins[6]); // + NcBE
 
-      fprintf(outfileb," %s & %s & ~%s & %s; \n",
-	      pins[5],pins[3],pins[2],pins[6]); // DCbE
+              fprintf(outfilea," %s & %s & ~%s & %s | ",
+	        pins[13],pins[3],pins[2],pins[6]); // KCbE
 
-      fprintf(outfilea,"assign %s = %s & ~%s & ~%s & %s | ",
-	      pins[10],pins[1],pins[14],pins[15],pins[11]); // I=AlmJ
-      fprintf(outfileb,"        %s & ~%s & %s & %s | \n",
-	      pins[16],pins[14],pins[15],pins[11]); // + NlMJ
+              fprintf(outfilea," %s & %s & %s & %s; \n",
+	        pins[5],pins[3],pins[2],pins[6]); // DCBE
+	    }
+          else
 
-      fprintf(outfileb," %s & %s & ~%s & %s | ",
-	      pins[13],pins[14],pins[15],pins[11]); // KLmJ
+	    {
+              fprintf(outfilea,"assign %s = %s & ~%s & ~%s  | ",
+	        pins[7],pins[1],pins[3],pins[2]); // F=Acb
+              fprintf(outfilea," %s & ~%s & %s  | ",
+	        pins[16],pins[3],pins[2]); // + NcB
 
-      fprintf(outfileb," %s & %s & ~%s & %s; \n",
-	      pins[5],pins[14],pins[15],pins[11]); // DLMJ
+              fprintf(outfilea," %s & %s & ~%s  | ",
+	        pins[13],pins[3],pins[2]); // KCb
+
+              fprintf(outfilea," %s & %s & %s; \n",
+	        pins[5],pins[3],pins[2]); // DCB
+	    }
 
           
-      fprintf(outfilea,"assign %s = ~%s; \n",pins[8],pins[7]);  // g = ~F
-      fprintf(outfilea,"assign %s = ~%s; \n",pins[9],pins[10]);  // h = ~I
+      fprintf(outfilea,"assign %s = ~%s; \n",flipcase(pins[7]),pins[7]);  // g = ~F
+	}
+
+
+
+      if (pins[10][0] != 0 )  // I
+	{
      
+	  if (pins[11][0] != 0 )  // J
+	    {
+              fprintf(outfilea,"assign %s = %s & ~%s & ~%s & %s | ",
+	        pins[10],pins[1],pins[14],pins[15],pins[11]); // I=AlmJ
+              fprintf(outfilea,"        %s & ~%s & %s & %s | \n",
+	        pins[16],pins[14],pins[15],pins[11]); // + NlMJ
+
+              fprintf(outfilea," %s & %s & ~%s & %s | ",
+	        pins[13],pins[14],pins[15],pins[11]); // KLmJ
+
+              fprintf(outfilea," %s & %s & %s & %s; \n",
+	        pins[5],pins[14],pins[15],pins[11]); // DLMJ
+	    }
+          else
+	    {
+              fprintf(outfilea,"assign %s = %s & ~%s & ~%s  | ",
+	        pins[10],pins[1],pins[14],pins[15]); // I=Alm
+              fprintf(outfilea,"        %s & ~%s & %s  | \n",
+	        pins[16],pins[14],pins[15]); // + NlM
+
+              fprintf(outfilea," %s & %s & ~%s  | ",
+	        pins[13],pins[14],pins[15]); // KLm
+
+              fprintf(outfilea," %s & %s & %s ; \n",
+	        pins[5],pins[14],pins[15]); // DLM
+	    }
+
+      fprintf(outfilea,"assign %s = ~%s; \n",flipcase(pins[10]),pins[10]);  // h = ~I
      
+          }
 
     }
 
   if (ctype == 'X') // clocked
     {
       
-      if (pins[6][0] != 0)
+      if (pins[6][0] != 0)  // F
 	{
-
           fprintf(outfileb," %s <= ",pins[6]);
 
 	  if (pins[9][0] != 0 )
@@ -8625,7 +8786,10 @@ void pkg_outb( int ipkgind, int brdnum )
         {
       fprintf(outfile,"%s%cH ",tlocstr,ctype);
            // H = J
-      fprintf(outfile,"%s = ~%s . \n",flipcase(pins[11]),pins[10]);  // i = ~H
+      fprintf(outfile,"%s = %s . \n",pins[9],pins[11]);  //  H = J
+
+      fprintf(outfile,"%s%cI ",tlocstr,ctype);
+      fprintf(outfile,"%s = ~%s . \n",flipcase(pins[9]),pins[9]);  //    
         }
      
     }
@@ -8643,7 +8807,7 @@ void pkg_outb( int ipkgind, int brdnum )
       fprintf(outfile,"%s %s ~%s %s + ",
 	      pins[13],pins[3],pins[2],pins[6]); // KCbE
 
-      fprintf(outfile,"%s %s ~%s %s . \n",
+      fprintf(outfile,"%s %s %s %s . \n",
 	      pins[5],pins[3],pins[2],pins[6]); // DCbE
 
       fprintf(outfile,"%s%cG ",tlocstr,ctype);
@@ -8661,7 +8825,7 @@ void pkg_outb( int ipkgind, int brdnum )
       fprintf(outfile,"%s %s ~%s %s + ",
 	      pins[13],pins[14],pins[15],pins[11]); // KLmJ
 
-      fprintf(outfile,"%s %s ~%s %s . \n",
+      fprintf(outfile,"%s %s %s %s . \n",
 	      pins[5],pins[14],pins[15],pins[11]); // DLMJ
 
        fprintf(outfile,"%s%cH ",tlocstr,ctype);
@@ -9451,14 +9615,26 @@ int main (int argc,char *argv[])
     exitnow(1);
    }
 
-  outfileb = fopen("verifile_lat","w");
+  fprintf(outfilea,"assign ZZI = 1'b1;\n");
+  fprintf(outfilea,"assign ZZO = 1'b0;\n");
 
-  fprintf(outfileb,"always@(posedge IZZ )\n");
-  fprintf(outfileb,"   begin \n");
+  outfileb = fopen("verifile_lat","w");
 
   if (outfileb == NULL)
    {
     printf("Can't open the output verilog file %s \n","verifile_lat");
+    exitnow(1);
+   }
+
+  fprintf(outfileb,"always@(posedge IZZ )\n");
+  fprintf(outfileb,"   begin \n");
+
+  outfilec = fopen("verifile_ram","w");
+
+
+  if (outfilec == NULL)
+   {
+    printf("Can't open the output verilog file %s \n","verifile_ram");
     exitnow(1);
    }
 
@@ -9768,6 +9944,7 @@ int main (int argc,char *argv[])
 
   fclose(outfile);
   fclose(outfilea);
+  fclose(outfileb);
 
  }  // end
 
