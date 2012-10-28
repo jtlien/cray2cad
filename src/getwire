@@ -1,0 +1,1 @@
+cat verifile_nl | grep "=" | cut -c1-12 | sed '1,$s/assign/wire /' | sed '1,$s/$/;/' | sed '1,$s/=//' | sort  >veriwire
