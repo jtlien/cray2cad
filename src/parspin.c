@@ -44,6 +44,7 @@ int groupcnt;
 int endofterms;
 
 int rchipcnt;
+int schipcnt;
 int argcnt;
 int alltermcnt;
 char outstr[20];
@@ -4712,7 +4713,7 @@ void parse_schip_rhs( char srcpin, int thispkgind)
               }
             if (linein[lineindex] == '+' )  // skip past plus
               {
-                printf("No plus in R chip \n");
+                printf("No plus in S chip \n");
                 lineindex+= 1;
               }
           }
@@ -5882,7 +5883,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
   int pin_list[30];
   int k;
 
-  for(i=1;i<17;i++)
+  for(i=1;i<19;i++)
     {
       strncpy(pins[i],pkgarray[ipkgind].pinterms[i],10);
       
@@ -7163,6 +7164,24 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
 	      pins[6],pins[5],pins[11],pins[13],
               pins[10],pins[9],pins[8],pins[7], pins[3],pins[14]);
           rchipcnt  += 1;
+	}
+
+    }
+
+  if (ctype == 'S')
+    {
+
+      if (pins[1][0] != 0 )
+	{
+	  // A = P ; BCDEFGHIJKLM; ON
+          // 1 = 18; 2 3 5 6 7 8 9 10 11 13 14 15 ; 17 16 .
+          // ram_4096 ( outpin, inpin, addr[0:11], cs, we, clk );
+ 	  fprintf(outfilec,"ram_4096x1 sinst_%d(%s,%s,{%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s}, %s, %s, IZZ); \n",
+		  schipcnt,pins[1],pins[18],pins[2],pins[3],
+	          pins[5],pins[6],pins[7],pins[8],pins[9],pins[10],
+		  pins[11],pins[13],pins[14],pins[15], pins[17],pins[16]);
+              
+          schipcnt  += 1;
 	}
 
     }
@@ -8743,12 +8762,12 @@ void pkg_outb( int ipkgind, int brdnum )
       if (pins[0][0] != 0 )  // A pin
 	{
 
-	  fprintf(outfile,"%s%cA ",tlocstr,ctype);   // BANM = EDJK; IHGF; CL
+	  fprintf(outfile,"%s%cA ",tlocstr,ctype);   // A = P;BCDFGHIJKLM; ON .
       fprintf(outfile,"%s  = %s ; %s %s %s %s %s %s %s %s %s %s %s %s ; %s %s \n",
-	      pins[0],pins[18],pins[2],pins[3],
+	      pins[1],pins[18],pins[2],pins[3],
 	      pins[5],pins[6],pins[7],pins[8],
               pins[9],pins[10],pins[11],pins[12],
-              pins[13],pins[14],pins[17],pins[15]);
+              pins[13],pins[14],pins[15],pins[17],pins[16]);
         }
      
     }
@@ -9335,6 +9354,7 @@ int main (int argc,char *argv[])
   //printf("Init jumpers\n");
 
    rchipcnt = 0;
+   schipcnt = 0;
 
   init_jmplocs();
 
