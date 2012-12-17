@@ -981,7 +981,7 @@ void handle_term(int itermcnt)
       if ( itermcnt == 1)  // 
 	{
           output_pin = 'F';
-          output_pinm = 'F';
+          output_pinm = 'E';
         }
 
       if ( itermcnt == 2)  // 
