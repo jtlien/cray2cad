@@ -2954,14 +2954,6 @@ void parse_dchip_rhs( char srcpin, int thispkgind)
 
             }
      
-          if (groupcnt == 2)
-            {
-             term_array[0].pin = 'A';
-             term_array[1].pin = 'J';
-             term_array[2].pin = 'L';
-             term_array[3].pin = 'K';
-             thistcount = 4;            
-            }
      
           if (groupcnt == 3)
             {
@@ -2972,6 +2964,13 @@ void parse_dchip_rhs( char srcpin, int thispkgind)
             }
      
           if (groupcnt == 4)
+            {
+             term_array[0].pin = 'E';
+             term_array[1].pin = 'K';
+             thistcount = 2;
+            }
+
+          if (groupcnt == 5)
             {
              term_array[0].pin = 'B';
              term_array[1].pin = 'C';
@@ -6218,21 +6217,21 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
 
   if (ctype == 'D')
     {
-      if (pins[7][0] != 0 )
+      if (pins[7][0] != 0 )  // F Pin
 	{
-          if (pins[16][0] != 0 )
+          if (pins[9][0] != 0 )  // H pin
             {
 	      fprintf(outfilea,"assign %s = ",pins[7]);
 
-              if (pins[16][0] != 0 )
+              if (pins[9][0] != 0 )
 		{
                  
-    	          pin_list[0] = 16;
-                  pin_list[1] = 10;
-    	          pin_list[2] = 15;
-                  pin_list[3] = 11;
-                  pin_list[4] = 13;
-                  pin_list[5] = 5;
+    	          pin_list[0] = 9;  //H
+                  pin_list[1] = 10; // I
+    	          pin_list[2] = 15;  //M
+                  pin_list[3] = 11; // J
+                  pin_list[4] = 13;  //L
+                  pin_list[5] = 13;  //
 
  	          print_veri_pingroupa(6,pin_list,ipkgind);
                  }
@@ -6241,56 +6240,56 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
 		{
                   fprintf(outfilea," | ");
 
-    	          pin_list[0] = 16;
-                  pin_list[1] = 15;
-    	          pin_list[2] = 11;
-                  pin_list[3] = 14;
-                  pin_list[4] = 13;
+    	          pin_list[0] = 16;  //N
+                  pin_list[1] = 15;  //M
+    	          pin_list[2] = 11;  //J
+                  pin_list[3] = 14;  //L
+                  pin_list[4] = 13;  //K
                 
  	          print_veri_pingroupa(5,pin_list,ipkgind);
                  }
 
-              if (pins[1][0] != 0 )
+              if (pins[1][0] != 0 )  //A
         	 {
                   fprintf(outfilea," | ");
 
-    	          pin_list[0] = 1;
-                  pin_list[1] = 11;
-    	          pin_list[2] = 14;
-                  pin_list[3] = 13;
+    	          pin_list[0] = 1;   //A
+                  pin_list[1] = 11;  // J
+    	          pin_list[2] = 14;  // L
+                  pin_list[3] = 13; //K
 
 
  	          print_veri_pingroupa(4,pin_list,ipkgind);
                  }
                  
           
-              if (pins[5][0] != 0 )
+              if (pins[5][0] != 0 )  // D
 	        {
                   fprintf(outfilea," | ");
 
-    	          pin_list[0] = 5;
-                  pin_list[1] = 14;
-    	          pin_list[2] = 13;
+    	          pin_list[0] = 5;   // D
+                  pin_list[1] = 14; // L
+    	          pin_list[2] = 13;  // K
               
  	          print_veri_pingroupa(3,pin_list,ipkgind);
                  }
                
-               if (pins[6][0] != 0 )
+	      if (pins[6][0] != 0 )  // E
                 {
                   fprintf(outfilea," | ");
 
-    	          pin_list[0] = 6;
-                  pin_list[1] = 13;
+    	          pin_list[0] = 6;   // E
+                  pin_list[1] = 13;  // K
     	                       
  	          print_veri_pingroupa(2,pin_list,ipkgind);
                  }
 
-                if (pins[2][0] != 0 )
+	      if (pins[2][0] != 0 ) // B
                  {
                   fprintf(outfilea," | ");
 
-    	          pin_list[0] = 2;
-                  pin_list[1] = 3;
+    	          pin_list[0] = 2;   //B
+                  pin_list[1] = 3;   //C
     	                       
  	          print_veri_pingroupa(2,pin_list,ipkgind);
                  }
@@ -7960,32 +7959,35 @@ void pkg_outb( int ipkgind, int brdnum )
     {
       if (pins[7][0] != 0 )
 	{
-          if (pins[16][0] != 0 )
+          if (pins[9][0] != 0 )  // H pin
             {
 
              fprintf(outfile,"%s%cF ",tlocstr,ctype);
-              fprintf(outfile,"%s = %s %s %s %s %s %s + ",
-	      pins[7],pins[16],pins[10],pins[15],pins[11],pins[13],pins[5] );
-             fprintf(outfile,"%s %s %s %s %s ",
+              fprintf(outfile,"%s = %s %s %s %s %s %s ",
+	      pins[7],pins[9],pins[10],pins[15],pins[11],pins[14],pins[13] );
+	    }
+          if (pins[16] != 0 ) // N pin
+            {
+             fprintf(outfile,"+ %s %s %s %s %s ",
 	      pins[16],pins[15],pins[11],pins[14],pins[13] );
 	    }
-	  if (pins[1][0] != 0 )
+	  if (pins[1][0] != 0 )  // A Pin
             {
              fprintf(outfile," + %s %s %s %s ",
 	      pins[1],pins[11],pins[13],pins[14] );
             }
-          if (pins[5][0] != 0 )
+          if (pins[5][0] != 0 )  // D Pin
 	    {
             fprintf(outfile," + %s %s %s ",
 	      pins[5],pins[14],pins[13] );
             }
-          if (pins[6][0] != 0 )
+          if (pins[6][0] != 0 )   // E Pin
             {
              fprintf(outfile,"+ %s %s ",
 	          pins[6],pins[13] );
             }
 
-	  if (pins[2][0] != 0 )
+	  if (pins[2][0] != 0 )  // B pin
 	    {
               fprintf(outfile,"+ %s %s ",
 	         pins[2],pins[3] );    
