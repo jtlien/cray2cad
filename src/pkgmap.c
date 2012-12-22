@@ -897,25 +897,25 @@ void handle_term(int itermcnt)
       if ( itermcnt == 1)  // 
 	{
           output_pin = 'B';
-          output_pinm = 'Z';
+          output_pinm = '*';
         }
 
       if ( itermcnt == 2)  // 
 	{
           output_pin = 'A';
-          output_pinm = 'Z';
+          output_pinm = '*';
         }
 
       if ( itermcnt == 3)  // 
 	{
           output_pin = 'N';
-          output_pinm = 'Z';
+          output_pinm = '*';
         }
 
       if ( itermcnt == 4)  // 
 	{
           output_pin = 'M';
-          output_pinm = 'Z';
+          output_pinm = '*';
         }
 
       if ( itermcnt > 4)
