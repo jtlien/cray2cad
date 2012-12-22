@@ -3162,6 +3162,10 @@ void parse_fchip_rhs( char srcpin, int thispkgind)
 
    if (linein[lineindex] != '.')    // enables
       {
+        if (linein[lineindex] == ';' )
+	  {
+
+	    lineindex +=1;
 
           for(j=0; j < 2; j += 1)             // default to forced one
            {
@@ -3175,7 +3179,7 @@ void parse_fchip_rhs( char srcpin, int thispkgind)
 
           apply_terms_to_pkg(termcnt, term_array,2, thispkgind);  // 3 terms to 
 	}
-
+      }
               
 }  // parse_fchip
  
@@ -4605,6 +4609,7 @@ void parse_rchip_rhs( char srcpin, int thispkgind)
             if (groupcnt != 2)
 	      {
 		printf("Missing groups in R chip \n");
+                printf("Line with r chip = %s \n",linein);
               }
             groupend = TRUE;
 
@@ -4699,6 +4704,7 @@ void parse_schip_rhs( char srcpin, int thispkgind)
             if (groupcnt != 2)
 	      {
 		printf("Missing groups in S chip \n");
+                printf("Line with S chip = %s \n",linein);
               }
             groupend = TRUE;
 
