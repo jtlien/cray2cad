@@ -5,8 +5,8 @@
 
 #define EOLN '\n'
 #define MAXCIRC 2024
-#define MAXBOOL 4000
-#define MAXPKGS 4000
+#define MAXBOOL 8000
+#define MAXPKGS 8000
 #define MAXLOADS 24  // loads on each boolean
 #define MAXRJMPS  5000   // at most 96 * 12 * 4  raw jumpers
 #define MAXBRDJMPS 1000
