@@ -5934,7 +5934,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
 	    }
 
           fprintf(outfilea," ; \n");
-          fprintf(outfilea,"assign %s = ~%s; \n",flipcase(pins[5]),pins[5]); 
+          fprintf(outfilea,"assign %s = ~%s; //complement \n",flipcase(pins[5]),pins[5]); 
                                                              // E=~D
 	}
 
@@ -5975,7 +5975,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
 	    }
 
           fprintf(outfilea," ; \n");
-          fprintf(outfilea,"assign %s = ~%s; \n",flipcase(pins[8]),pins[8]); 
+          fprintf(outfilea,"assign %s = ~%s;  //complement \n",flipcase(pins[8]),pins[8]); 
                                                              // f = ~G
 	}
 
@@ -6033,7 +6033,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
 
 	  fprintf(outfilea," ; \n");
      
-      fprintf(outfilea,"assign %s = ~%s; \n",flipcase(pins[10]),pins[10]);  // h=~I
+      fprintf(outfilea,"assign %s = ~%s;  //complement \n",flipcase(pins[10]),pins[10]);  // h=~I
 
 	}
 
@@ -6085,7 +6085,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
 
 	  fprintf(outfilea," ; \n");
      
-          fprintf(outfilea,"assign %s = ~%s; \n",flipcase(pins[7]),pins[7]);  // E=~F
+          fprintf(outfilea,"assign %s = ~%s; //complement \n",flipcase(pins[7]),pins[7]);  // E=~F
         }
      
       if (pins[6][0] != 0 )
@@ -6136,7 +6136,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
 
 	  fprintf(outfilea," ; \n");
      
-          fprintf(outfilea,"assign %s = ~%s; \n",flipcase(pins[6]),pins[6]);  // E=~F
+          fprintf(outfilea,"assign %s = ~%s;  //complement \n",flipcase(pins[6]),pins[6]);  // E=~F
 
 
         }
@@ -6215,7 +6215,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
 
 	  fprintf(outfilea," ; \n");
 
-       fprintf(outfilea,"assign %s = ~%s; \n",flipcase(pins[7]),pins[7]);  // g = ~F
+       fprintf(outfilea,"assign %s = ~%s;  //complement \n",flipcase(pins[7]),pins[7]);  // g = ~F
 
 	}
     }
@@ -6306,7 +6306,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
          // F = NIMJLK + NMJLK + AJLK + DLK + EK +BC
 
 
-	  fprintf(outfilea,"assign %s = ~%s; \n",flipcase(pins[7]),pins[7]);  // g = ~F
+	  fprintf(outfilea,"assign %s = ~%s;  //complement \n",flipcase(pins[7]),pins[7]);  // g = ~F
         }
 
 
@@ -6319,7 +6319,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
            	      
       // D = CJ
 
-      fprintf(outfilea,"assign %s = ~%s; \n",flipcase(pins[5]),pins[5]); 
+      fprintf(outfilea,"assign %s = ~%s; //complement \n",flipcase(pins[5]),pins[5]); 
                         // e = ~D
      
     }
@@ -6459,7 +6459,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
            print_veri_pingroupa(4,pin_list,ipkgind);
 
            fprintf(outfilea," );\n");
-           fprintf(outfilea,"assign %s = ~%s ;\n",flipcase(pins[7]),pins[7]);
+           fprintf(outfilea,"assign %s = ~%s ;  //complement \n",flipcase(pins[7]),pins[7]);
 	}
    
 
@@ -6486,7 +6486,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
            print_veri_pingroupa(5,pin_list,ipkgind);
 
            fprintf(outfilea," );\n");
-           fprintf(outfilea,"assign %s = ~%s ;\n",flipcase(pins[10]),pins[10]);
+           fprintf(outfilea,"assign %s = ~%s;  //complement;\n",flipcase(pins[10]),pins[10]);
 	}
     }
 
@@ -6508,7 +6508,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
           fprintf(outfilea," ; \n");
 
 
-	 fprintf(outfilea,"assign %s = ~%s; \n",flipcase(pins[8]),pins[8]);
+	 fprintf(outfilea,"assign %s = ~%s;  //complement  \n",flipcase(pins[8]),pins[8]);
                                      // g = ~F
 
 	}
@@ -6526,7 +6526,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
           print_veri_pingroupa(4,pin_list,ipkgind);
           fprintf(outfilea," ; \n");
      
-         fprintf(outfilea,"assign %s = ~%s; \n",flipcase(pins[9]),pins[9]);  // i = ~H
+         fprintf(outfilea,"assign %s = ~%s;  //complement \n",flipcase(pins[9]),pins[9]);  // i = ~H
 
         }
     }
@@ -6545,7 +6545,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
           print_veri_pingroupa(3,pin_list,ipkgind);
           fprintf(outfilea," ; \n");
      
-	 fprintf(outfilea,"assign %s = ~%s; \n",flipcase(pins[10]),pins[10]);  // h = ~I
+	 fprintf(outfilea,"assign %s = ~%s;  //complement \n",flipcase(pins[10]),pins[10]);  // h = ~I
         }
 
       if (pins[6][0] != 0 )
@@ -6559,7 +6559,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
           print_veri_pingroupa(3,pin_list,ipkgind);
           fprintf(outfilea," ; \n");
 
-         fprintf(outfilea,"assign %s = ~%s; \n",flipcase(pins[6]),pins[6]);  // d = ~E
+         fprintf(outfilea,"assign %s = ~%s;  //complement \n",flipcase(pins[6]),pins[6]);  // d = ~E
 	}
    
       if (pins[8][0] != 0 )
@@ -6572,7 +6572,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
           print_veri_pingroupa(3,pin_list,ipkgind);
           fprintf(outfilea," ; \n");
 
-	 fprintf(outfilea,"assign %s = ~%s; \n",flipcase(pins[8]),pins[8]);  // f = ~G
+	 fprintf(outfilea,"assign %s = ~%s;  //complement \n",flipcase(pins[8]),pins[8]);  // f = ~G
         }
 
     }
@@ -6590,7 +6590,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
 	      pins[8],pins[5],pins[6] );
 
          
-	  fprintf(outfilea,"assign %s = ~%s ; \n",flipcase(pins[8]),pins[8]);  // f = ~G
+	  fprintf(outfilea,"assign %s = ~%s ; //complement \n",flipcase(pins[8]),pins[8]);  // f = ~G
           }
 
          if (pins[9][0] != 0 )  // H=DJ
@@ -6599,7 +6599,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
            fprintf(outfilea,"assign %s = %s & %s ; \n",
 	      pins[9],pins[5],pins[11] );
 
-	   fprintf(outfilea,"assign %s = ~%s ;\n",flipcase(pins[9]),pins[9]);  // i = ~H
+	   fprintf(outfilea,"assign %s = ~%s ;  //complement \n",flipcase(pins[9]),pins[9]);  // i = ~H
      	  }
         }
       else  // No D
@@ -6611,7 +6611,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
           fprintf(outfilea,"assign %s = %s; \n",  
 	      pins[8],pins[6] );
 
-	  fprintf(outfilea,"assign %s = ~%s; \n",flipcase(pins[8]),pins[8]);  // f = ~G
+	  fprintf(outfilea,"assign %s = ~%s; //complement \n",flipcase(pins[8]),pins[8]);  // f = ~G
           }
 
 
@@ -6621,7 +6621,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
            fprintf(outfilea,"assign %s = %s; \n",
 	      pins[9],pins[11] );
 
-	   fprintf(outfilea,"assign %s = ~%s; \n",flipcase(pins[9]),pins[9]);  // i = ~H
+	   fprintf(outfilea,"assign %s = ~%s;  //complement \n",flipcase(pins[9]),pins[9]);  // i = ~H
      	  }
         }
 
@@ -6633,7 +6633,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
            fprintf(outfilea,"assign %s = %s & %s ; \n",
 	      pins[16],pins[13],pins[14] );
 
-            fprintf(outfilea,"assign %s = ~%s ; \n",flipcase(pins[16]),pins[16]);  // m = ~N
+            fprintf(outfilea,"assign %s = ~%s ;  //complement \n",flipcase(pins[16]),pins[16]);  // m = ~N
            }
 
           if (pins[1][0] != 0 )  // A=KC
@@ -6652,7 +6652,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
            fprintf(outfilea,"assign %s = %s; \n",
 	      pins[16],pins[14] );
 
-            fprintf(outfilea,"assign %s = ~%s; \n",flipcase(pins[16]),pins[16]);  // m = ~N
+            fprintf(outfilea,"assign %s = ~%s;  //complement \n",flipcase(pins[16]),pins[16]);  // m = ~N
            }
 
           if (pins[1][0] != 0 )  // A=KC
@@ -6661,7 +6661,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
             fprintf(outfilea,"assign %s = %s; \n",
 	      pins[1],pins[3] );
    
-            fprintf(outfilea,"assign %s = ~%s; \n",flipcase(pins[1]),pins[1]);  // b = ~A        
+            fprintf(outfilea,"assign %s = ~%s;  //complement \n",flipcase(pins[1]),pins[1]);  // b = ~A        
 	   }
        }
     }
@@ -6694,7 +6694,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
             }
 
           fprintf(outfilea," ; \n");
-	  fprintf(outfilea,"assign %s = ~%s; \n",flipcase(pins[9]),pins[9]);  // i=~H
+	  fprintf(outfilea,"assign %s = ~%s;  //complement \n",flipcase(pins[9]),pins[9]);  // i=~H
 	}
      
        if (pins[7][0] != 0)
@@ -6722,7 +6722,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
             }
 
           fprintf(outfilea," ; \n");
-	  fprintf(outfilea,"assign %s = ~%s; \n",flipcase(pins[7]),pins[7]);  // i=~H
+	  fprintf(outfilea,"assign %s = ~%s;  //complement \n",flipcase(pins[7]),pins[7]);  // i=~H
 	}     
 
     }
@@ -6737,7 +6737,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
              fprintf(outfileb," %s <= %s & %s ; \n",
 	      pins[8],pins[5],pins[6] );
 
-             fprintf(outfilea,"assign %s = ~%s; \n",flipcase(pins[8]),pins[8]);  // f = ~G
+             fprintf(outfilea,"assign %s = ~%s;  //complement \n",flipcase(pins[8]),pins[8]);  // f = ~G
 
              // G=DE
 	    }
@@ -6748,7 +6748,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
 	      pins[9],pins[5],pins[11] );
    
              
-             fprintf(outfilea,"assign %s = ~%s; \n",flipcase(pins[9]),pins[9]); 
+             fprintf(outfilea,"assign %s = ~%s;  //complement \n",flipcase(pins[9]),pins[9]); 
                           // i = ~H
              // H=DJ
             }
@@ -6758,7 +6758,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
              fprintf(outfileb," %s <= %s & %s ; \n",
 	        pins[16],pins[5],pins[14] );
 
-             fprintf(outfilea,"assign %s = ~%s; \n",flipcase(pins[16]),pins[16]); 
+             fprintf(outfilea,"assign %s = ~%s;  //complement \n",flipcase(pins[16]),pins[16]); 
                      // m = ~N
 
                      // N=DL
@@ -6769,7 +6769,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
              fprintf(outfileb," %s <= %s & %s ; \n",
 	      pins[1],pins[5],pins[3] );
 
-             fprintf(outfilea,"assign %s = ~%s; \n",flipcase(pins[1]),pins[1]);  
+             fprintf(outfilea,"assign %s = ~%s;  //complement \n",flipcase(pins[1]),pins[1]);  
 
              // b = ~A
    
@@ -6784,7 +6784,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
              fprintf(outfileb," %s <= %s ; \n",
 		     pins[8],pins[6] );
 
-             fprintf(outfilea,"assign %s = ~%s; \n",flipcase(pins[8]),pins[8]);  // f = ~G
+             fprintf(outfilea,"assign %s = ~%s;  //complement \n",flipcase(pins[8]),pins[8]);  // f = ~G
 
              // G=DE
 	    }
@@ -6795,7 +6795,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
 	      pins[9],pins[11] );
    
              
-             fprintf(outfilea,"assign %s = ~%s; \n",flipcase(pins[9]),pins[9]); 
+             fprintf(outfilea,"assign %s = ~%s;  //complement \n",flipcase(pins[9]),pins[9]); 
                           // i = ~H
              // H=DJ
             }
@@ -6805,7 +6805,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
              fprintf(outfileb," %s <= %s ; \n",
 	        pins[16],pins[14] );
 
-             fprintf(outfilea,"assign %s = ~%s; \n",flipcase(pins[16]),pins[16]); 
+             fprintf(outfilea,"assign %s = ~%s;  //complement \n",flipcase(pins[16]),pins[16]); 
                      // m = ~N
 
                      // N=DL
@@ -6816,7 +6816,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
              fprintf(outfileb," %s <= %s ; \n",
 	      pins[1],pins[3] );
 
-             fprintf(outfilea,"assign %s = ~%s; \n",flipcase(pins[1]),pins[1]);  
+             fprintf(outfilea,"assign %s = ~%s;  //complement \n",flipcase(pins[1]),pins[1]);  
 
              // b = ~A
    
@@ -6871,7 +6871,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
                            
                    // E = MNA+JL+BC
 
-         fprintf(outfilea,"assign %s = ~%s; \n",flipcase(pins[6]),pins[6]);  // d = ~E
+         fprintf(outfilea,"assign %s = ~%s;  //complement \n",flipcase(pins[6]),pins[6]);  // d = ~E
 
 	}
 
@@ -6915,7 +6915,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
                            
                    // F = MNA+JL+BC
 
-         fprintf(outfilea,"assign %s = ~%s; \n",flipcase(pins[7]),pins[7]);  // d = ~E
+         fprintf(outfilea,"assign %s = ~%s;  //complement \n",flipcase(pins[7]),pins[7]);  // d = ~E
 
 	}
 
@@ -6959,7 +6959,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
                            
                    // I = MNA+JL+BC
 
-         fprintf(outfilea,"assign %s = ~%s; \n",flipcase(pins[10]),pins[10]);  // d = ~E
+         fprintf(outfilea,"assign %s = ~%s;  //complement \n",flipcase(pins[10]),pins[10]);  // d = ~E
 
 	}
     }  
@@ -7033,7 +7033,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
 
            // I = GFEAJ + DEAJ + NAJ + MLJ + CB;
 
-	  fprintf(outfilea,"assign %s = ~%s; \n",flipcase(pins[10]),pins[10]); 
+	  fprintf(outfilea,"assign %s = ~%s;  //complement \n",flipcase(pins[10]),pins[10]); 
               // h = ~I
         }
 
@@ -7048,7 +7048,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
          fprintf(outfileb," %s & ~%s ; \n",
 	      pins[1],pins[5]); // Ad
 
-         fprintf(outfilea,"assign %s = ~%s; \n",flipcase(pins[15]),pins[15]);  // n=~M
+         fprintf(outfilea,"assign %s = ~%s;  //complement \n",flipcase(pins[15]),pins[15]);  // n=~M
         }
  
       if(pins[10][0] != 0 )
@@ -7058,7 +7058,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
         fprintf(outfileb," %s & ~%s ; \n",
 	      pins[8],pins[5]); // Gd
 
-        fprintf(outfilea,"assign %s = ~%s; \n",flipcase(pins[10]),pins[10]);  // h=~I
+        fprintf(outfilea,"assign %s = ~%s;  //complement \n",flipcase(pins[10]),pins[10]);  // h=~I
         }
 
       if (pins[7][0] != 0 )
@@ -7068,7 +7068,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
          fprintf(outfileb," %s & ~%s ; \n",
 	      pins[3],pins[5]); // Cd
           
-	 fprintf(outfilea,"assign %s = ~%s; \n",flipcase(pins[7]),pins[7]);  // e=~F
+	 fprintf(outfilea,"assign %s = ~%s;  //complement \n",flipcase(pins[7]),pins[7]);  // e=~F
      
 	}
     }
@@ -7110,7 +7110,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
             }
 	  fprintf(outfileb," ; \n");
 
-         fprintf(outfilea,"assign %s = ~%s; \n",flipcase(pins[2]),pins[2]);  // c = ~B
+         fprintf(outfilea,"assign %s = ~%s;  //complement \n",flipcase(pins[2]),pins[2]);  // c = ~B
 	}
 
       if (pins[5][0] != 0 )
@@ -7150,7 +7150,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
 
 	  fprintf(outfileb," ; \n");   // D=FI+GJ+HL
      
-      fprintf(outfilea,"assign %s = ~%s; \n",flipcase(pins[5]),pins[5]);  
+      fprintf(outfilea,"assign %s = ~%s;  //complement \n",flipcase(pins[5]),pins[5]);  
                                   // e = ~D
         }
      
@@ -7241,7 +7241,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
 	    }
 
           fprintf(outfilea," ; \n");
-	  fprintf(outfilea,"assign %s = ~%s; \n",flipcase(pins[7]),pins[7]);  // g = ~F
+	  fprintf(outfilea,"assign %s = ~%s; //complement \n",flipcase(pins[7]),pins[7]);  // g = ~F
 	}
 
 
@@ -7293,7 +7293,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
 	    }
 
           fprintf(outfilea," ; \n");
-	  fprintf(outfilea,"assign %s = ~%s; \n",flipcase(pins[6]),pins[6]);  // f = ~E
+	  fprintf(outfilea,"assign %s = ~%s;  //complement \n",flipcase(pins[6]),pins[6]);  // f = ~E
 	}
      
     }
@@ -7348,7 +7348,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
 	    }
 
           fprintf(outfileb," ;\n"); // B=GLE+DFE+DLC+GFC
-	  fprintf(outfilea,"assign %s = ~%s; \n",flipcase(pins[2]),pins[2]);  // a = ~B   
+	  fprintf(outfilea,"assign %s = ~%s;  //complement \n",flipcase(pins[2]),pins[2]);  // a = ~B   
 	}
 
       if (pins[15][0] != 0 )  // M =
@@ -7398,13 +7398,13 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
 	    }
 
           fprintf(outfileb," ;\n"); // M=GLE+DFE+DLC+DLE
-	  fprintf(outfilea,"assign %s = ~%s; \n",flipcase(pins[15]),pins[15]);  // n = ~M
+	  fprintf(outfilea,"assign %s = ~%s;  //complement \n",flipcase(pins[15]),pins[15]);  // n = ~M
          }
 
       if (pins[9][0] != 0 )
         {
          fprintf(outfileb," %s <= %s ; \n",pins[9],pins[11]);
-         fprintf(outfilea,"assign %s = ~%s; \n",flipcase(pins[9]),pins[9]);
+         fprintf(outfilea,"assign %s = ~%s;  //complement \n",flipcase(pins[9]),pins[9]);
         }
       // H = J
      
@@ -7444,7 +7444,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
 	    }
 
           
-      fprintf(outfilea,"assign %s = ~%s; \n",flipcase(pins[7]),pins[7]);  // g = ~F
+      fprintf(outfilea,"assign %s = ~%s;  //complement \n",flipcase(pins[7]),pins[7]);  // g = ~F
 	}
 
 
@@ -7479,7 +7479,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
 	        pins[5],pins[14],pins[15]); // DLM
 	    }
 
-      fprintf(outfilea,"assign %s = ~%s; \n",flipcase(pins[10]),pins[10]);  // h = ~I
+      fprintf(outfilea,"assign %s = ~%s;  //complement \n",flipcase(pins[10]),pins[10]);  // h = ~I
      
           }
 
@@ -7542,7 +7542,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
                 
 	              // E = HI+LM+NA+BC+J
      
-      fprintf(outfilea,"assign %s = ~%s; \n",flipcase(pins[6]),pins[6]);  // d = ~E
+      fprintf(outfilea,"assign %s = ~%s;  //complement \n",flipcase(pins[6]),pins[6]);  // d = ~E
          
         }
 
@@ -7601,7 +7601,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
                 
 	              // F = HI+LM+NA+BC+J
      
-	  fprintf(outfilea,"assign %s = ~%s; \n",flipcase(pins[7]),pins[7]);  // g = ~F
+	  fprintf(outfilea,"assign %s = ~%s;  //complement \n",flipcase(pins[7]),pins[7]);  // g = ~F
 	}
 
     }
@@ -7622,7 +7622,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
 	      pins[6],pins[9] );
             }
      
-	  fprintf(outfilea,"assign %s = ~%s; \n",flipcase(pins[6]),pins[6]);  // g = ~E
+	  fprintf(outfilea,"assign %s = ~%s;  //complement \n",flipcase(pins[6]),pins[6]);  // g = ~E
 	}
 
       if (pins[5][0] != 0 )
@@ -7639,7 +7639,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
 	      pins[5],pins[11]);
 	    }
 
-          fprintf(outfilea,"assign %s = ~%s; \n",flipcase(pins[5]),pins[5]);  // f = ~D
+          fprintf(outfilea,"assign %s = ~%s;  //complement \n",flipcase(pins[5]),pins[5]);  // f = ~D
    
 	}
 
@@ -7657,7 +7657,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
 	      pins[3],pins[14]);
 	    }
 
-	  fprintf(outfilea,"assign %s = ~%s; \n",flipcase(pins[3]),pins[3]);  // n = ~C
+	  fprintf(outfilea,"assign %s = ~%s;  //complement \n",flipcase(pins[3]),pins[3]);  // n = ~C
         }
 
       if (pins[2][0] != 0 )              
@@ -7674,7 +7674,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
 	        pins[2],pins[15] );
             }
 
-	  fprintf(outfilea,"assign %s = ~%s; \n",flipcase(pins[2]),pins[2]);  // a = ~B
+	  fprintf(outfilea,"assign %s = ~%s;  //complement \n",flipcase(pins[2]),pins[2]);  // a = ~B
 	}
 
     }
@@ -8561,9 +8561,9 @@ void pkg_outb( int ipkgind, int brdnum )
         fprintf(outfile,"%s%cE ",tlocstr,ctype);
         fprintf(outfile,"%s = ",
 		pins[6]);
-        if (pins[16][0] != 0 )
+        if (pins[15][0] != 0 )
           {
-           fprintf(outfile," %s %s %s ",pins[16],pins[15],pins[1]);
+           fprintf(outfile," %s %s %s ",pins[15],pins[16],pins[1]);
           }
         if (pins[11][0] != 0 )
 	  {
@@ -8586,9 +8586,9 @@ void pkg_outb( int ipkgind, int brdnum )
          fprintf(outfile,"%s%cF ",tlocstr,ctype);
          fprintf(outfile,"%s = ",
 		pins[7]);
-        if (pins[16][0] != 0 )
+        if (pins[15][0] != 0 )
           {
-           fprintf(outfile," %s %s %s ",pins[16],pins[15],pins[1]);
+           fprintf(outfile," %s %s %s ",pins[15],pins[16],pins[1]);
           }
         if (pins[11][0] != 0 )
 	  {
@@ -8610,9 +8610,9 @@ void pkg_outb( int ipkgind, int brdnum )
          fprintf(outfile,"%s%cI ",tlocstr,ctype);
          fprintf(outfile,"%s = ", pins[10]);
 	
-        if (pins[16][0] != 0 )
+        if (pins[15][0] != 0 )
           {
-           fprintf(outfile," %s %s %s ",pins[16],pins[15],pins[1]);
+           fprintf(outfile," %s %s %s ",pins[15],pins[16],pins[1]);
           }
         if (pins[11][0] != 0 )
 	  {
@@ -10035,7 +10035,7 @@ int main (int argc,char *argv[])
 
   for(k=0;k < vincnt; k += 1)
     {
-      fprintf(outfilea,"assign %s = ~%s; \n",flipcase(interms_srt[k]),
+      fprintf(outfilea,"assign %s = ~%s; //complement \n",flipcase(interms_srt[k]),
                      interms_srt[k] );
     }
 
