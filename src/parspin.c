@@ -4461,6 +4461,18 @@ void parse_qchip_rhs( char srcpin, int thispkgind)
            apply_terms_to_pkg(termcnt, term_array,3, thispkgind);  // 2 terms to pkg
           }
 
+           if (linein[lineindex] == '.')
+	    {
+             groupend = TRUE;
+            }
+          else
+           {
+
+            if (linein[lineindex] == '+' )  // skip past plus
+              {
+                lineindex+= 1;
+              }
+           }
 
          if (groupend == FALSE)
 	  {
@@ -4519,6 +4531,27 @@ void parse_qchip_rhs( char srcpin, int thispkgind)
            apply_terms_to_pkg(termcnt, term_array,3, thispkgind);  // 2 terms to pkg
           }
 
+        if (groupcnt == 3 )
+    	 {
+           term_array[0].pin = 'C';
+           term_array[1].pin = 'B';
+           term_array[2].pin = 'A';
+
+           apply_terms_to_pkg(termcnt, term_array,3, thispkgind);  // 2 terms to pkg
+          }
+
+           if (linein[lineindex] == '.')
+	    {
+             groupend = TRUE;
+            }
+          else
+           {
+
+            if (linein[lineindex] == '+' )  // skip past plus
+              {
+                lineindex+= 1;
+              }
+           }
 
          if (groupend == FALSE)
 	  {
@@ -7215,7 +7248,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
               pin_list[2] = 1;
 
               print_veri_pingroupa(3,pin_list,ipkgind);
-	    }
+	    } 
 
 
           if (pins[3][0] != 0 )
@@ -7229,7 +7262,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
               print_veri_pingroupa(3,pin_list,ipkgind);
 	    }
 
-          if (pins[3][0] != 0 )
+          if (pins[14][0] != 0 )
             {
 	      fprintf(outfilea," | ");
 
@@ -7295,7 +7328,12 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
           fprintf(outfilea," ; \n");
 	  fprintf(outfilea,"assign %s = ~%s;  //complement \n",flipcase(pins[6]),pins[6]);  // f = ~E
 	}
-     
+
+      if (pins[10][0] != 0 )  // I
+	{
+	fprintf(outfilea,"assign %s = %s & %s; \n", pins[10],pins[11],pins[13]);
+        fprintf(outfilea,"assign %s = ~%s; \n",flipcase(pins[10]),pins[10]);
+       }
     }
 
   if (ctype == 'T')  //clocked
