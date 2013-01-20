@@ -1,0 +1,2 @@
+cat ampkg | cut -c1-2 >m1
+cat allloc m1 | sort | uniq -c | grep " 1 " | sed '1,$s/ 1 //' >mpkg
