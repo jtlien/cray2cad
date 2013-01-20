@@ -8297,7 +8297,7 @@ void pkg_outb( int ipkgind, int brdnum )
       if (pins[9][0] != 0 )   // H = JKLM
 	{
            fprintf(outfile,"%s%cH ",tlocstr,ctype);
-           fprintf(outfile,"%s = %s %s %s %s  .\n",
+           fprintf(outfile,"%s = %s %s %s %s .\n",
 	     pins[9],pins[11],pins[13],pins[14],pins[15]);
         
            fprintf(outfile,"%s%cI ",tlocstr,ctype);
@@ -8498,7 +8498,7 @@ void pkg_outb( int ipkgind, int brdnum )
 	          pins[9],pins[5],pins[11] );
 
              fprintf(outfile,"%s%cI ",tlocstr,ctype);
-              fprintf(outfile,"%s = ~%s . \n",flipcase(pins[10]),pins[9]); 
+              fprintf(outfile,"%s = ~%s . \n",flipcase(pins[9]),pins[9]); 
                           // i = ~H
    
  	      }
@@ -8553,7 +8553,7 @@ void pkg_outb( int ipkgind, int brdnum )
 	          pins[9],pins[11] );
 
              fprintf(outfile,"%s%cI ",tlocstr,ctype);
-              fprintf(outfile,"%s = ~%s . \n",flipcase(pins[10]),pins[9]); 
+              fprintf(outfile,"%s = ~%s . \n",flipcase(pins[9]),pins[9]); 
                           // i = ~H
    
  	      }
@@ -8722,8 +8722,8 @@ void pkg_outb( int ipkgind, int brdnum )
          fprintf(outfile,"%s%cM ",tlocstr,ctype);
          fprintf(outfile,"%s = %s %s + ",
 	      pins[15],pins[14],pins[5]); // M=LD
-         fprintf(outfile,"%s ~%s . \n",
-	      pins[1],pins[5]); // Ad
+         fprintf(outfile,"%s %s . \n",
+		 pins[1],flipcase(pins[5]) ); // Ad
 
          fprintf(outfile,"%s%cN ",tlocstr,ctype);
          fprintf(outfile,"%s = ~%s . \n",flipcase(pins[15]),pins[15]);  // n=~M
@@ -8734,8 +8734,8 @@ void pkg_outb( int ipkgind, int brdnum )
         fprintf(outfile,"%s%cI ",tlocstr,ctype);
         fprintf(outfile,"%s = %s %s + ",
 	      pins[10],pins[11],pins[5]); // I=JD
-        fprintf(outfile,"%s ~%s . \n",
-	      pins[8],pins[5]); // Gd
+        fprintf(outfile,"%s %s . \n",
+		pins[8],flipcase( pins[5])); // Gd
 
         fprintf(outfile,"%s%cH ",tlocstr,ctype);
         fprintf(outfile,"%s = ~%s . \n",flipcase(pins[10]),pins[10]);  // h=~I
@@ -8747,8 +8747,8 @@ void pkg_outb( int ipkgind, int brdnum )
      
          fprintf(outfile,"%s = %s %s + ",
 	      pins[7],pins[2],pins[5]); // F=BD
-        fprintf(outfile,"%s ~%s . \n",
-	      pins[3],pins[5]); // Cd
+        fprintf(outfile,"%s %s . \n",
+		pins[3],flipcase (pins[5]) ); // Cd
 
          fprintf(outfile,"%s%cE ",tlocstr,ctype);
          fprintf(outfile,"%s = ~%s . \n",flipcase(pins[7]),pins[7]);  // e=~F
