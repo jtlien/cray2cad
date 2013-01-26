@@ -6566,7 +6566,6 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
 
   if (ctype == 'I')
     {
-
       if (pins[10][0] != 0 )
 	{
 	  fprintf(outfilea,"assign %s = ",pins[10]);
@@ -7078,8 +7077,16 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
 	{
          fprintf(outfileb," %s <= %s & %s | ",
 	      pins[15],pins[14],pins[5]); // M=LD
-         fprintf(outfileb," %s & ~%s ; \n",
+         if( pins[1][0] != 0 )
+	   {
+           fprintf(outfileb," %s & ~%s ; \n",
 	      pins[1],pins[5]); // Ad
+           }
+	 else     // handle case where second input not there
+	   {
+           fprintf(outfileb," ZZO & ~%s ; \n",
+	      pins[5]); // Ad
+           }
 
          fprintf(outfilea,"assign %s = ~%s;  //complement \n",flipcase(pins[15]),pins[15]);  // n=~M
         }
@@ -7088,9 +7095,16 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
 	{
         fprintf(outfileb," %s <= %s & %s | ",
 	      pins[10],pins[11],pins[5]); // I=JD
-        fprintf(outfileb," %s & ~%s ; \n",
+        if (pins[8][0] != 0 )
+          {
+           fprintf(outfileb," %s & ~%s ; \n",
 	      pins[8],pins[5]); // Gd
-
+          }
+        else
+          {
+           fprintf(outfileb," ZZO & ~%s ; \n",
+	      pins[5]); // Gd
+          }
         fprintf(outfilea,"assign %s = ~%s;  //complement \n",flipcase(pins[10]),pins[10]);  // h=~I
         }
 
@@ -7098,9 +7112,17 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
 	{
          fprintf(outfileb," %s <= %s & %s | ",
 	      pins[7],pins[2],pins[5]); // F=BD
-         fprintf(outfileb," %s & ~%s ; \n",
+         if (pins[3][0] != 0 )
+           {
+            fprintf(outfileb," %s & ~%s ; \n",
 	      pins[3],pins[5]); // Cd
-          
+	   }
+	 else
+           {
+            fprintf(outfileb," ZZO & ~%s ; \n",
+	      pins[5]); // Cd
+	   }
+
 	 fprintf(outfilea,"assign %s = ~%s;  //complement \n",flipcase(pins[7]),pins[7]);  // e=~F
      
 	}
@@ -7241,7 +7263,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
 
           if (pins[3][0] != 0 )
             {
-	      fprintf(outfileb," | ");
+	      fprintf(outfilea," | ");
 
               pin_list[0] = 3;  // CMA
               pin_list[1] = 15;
@@ -7316,7 +7338,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
 
           if (pins[3][0] != 0 )
             {
-	      fprintf(outfileb," | ");
+	      fprintf(outfilea," | ");
 
               pin_list[0] = 3;  // CBA
               pin_list[1] = 2;
@@ -8722,8 +8744,16 @@ void pkg_outb( int ipkgind, int brdnum )
          fprintf(outfile,"%s%cM ",tlocstr,ctype);
          fprintf(outfile,"%s = %s %s + ",
 	      pins[15],pins[14],pins[5]); // M=LD
-         fprintf(outfile,"%s %s . \n",
+         if (pins[1][0] != 0 )
+           {
+            fprintf(outfile,"%s %s . \n",
 		 pins[1],flipcase(pins[5]) ); // Ad
+           }
+         else
+           {
+            fprintf(outfile,"ZZO %s . \n",
+		 flipcase(pins[5]) ); // Ad
+           }
 
          fprintf(outfile,"%s%cN ",tlocstr,ctype);
          fprintf(outfile,"%s = ~%s . \n",flipcase(pins[15]),pins[15]);  // n=~M
@@ -8734,8 +8764,16 @@ void pkg_outb( int ipkgind, int brdnum )
         fprintf(outfile,"%s%cI ",tlocstr,ctype);
         fprintf(outfile,"%s = %s %s + ",
 	      pins[10],pins[11],pins[5]); // I=JD
-        fprintf(outfile,"%s %s . \n",
-		pins[8],flipcase( pins[5])); // Gd
+        if (pins[8][0] != 0 )
+	  {
+           fprintf(outfile,"%s %s . \n",
+	   	pins[8],flipcase( pins[5])); // Gd
+	  }
+        else
+	  {
+           fprintf(outfile,"ZZO %s . \n",
+	   	flipcase( pins[5])); // Gd
+	  }
 
         fprintf(outfile,"%s%cH ",tlocstr,ctype);
         fprintf(outfile,"%s = ~%s . \n",flipcase(pins[10]),pins[10]);  // h=~I
@@ -8747,8 +8785,16 @@ void pkg_outb( int ipkgind, int brdnum )
      
          fprintf(outfile,"%s = %s %s + ",
 	      pins[7],pins[2],pins[5]); // F=BD
-        fprintf(outfile,"%s %s . \n",
+         if (pins[3][0] != 0 )
+	   {
+           fprintf(outfile,"%s %s . \n",
 		pins[3],flipcase (pins[5]) ); // Cd
+           }
+         else
+	   {
+           fprintf(outfile,"ZZO %s . \n",
+		flipcase (pins[5]) ); // Cd
+           }
 
          fprintf(outfile,"%s%cE ",tlocstr,ctype);
          fprintf(outfile,"%s = ~%s . \n",flipcase(pins[7]),pins[7]);  // e=~F
