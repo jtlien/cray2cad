@@ -4,6 +4,7 @@
 #include "stdlib.h"
 
 #define EOLN '\n'
+#define CHARSPER 300
 #define MAXCIRC 2024
 #define MAXBOOL 8000
 #define MAXPKGS 8000
@@ -274,11 +275,11 @@ char *fstat;
 char *lineptr;
 
 i = 1;
-fstat = fgets(linein,120,infile);
+fstat = fgets(linein,CHARSPER,infile);
  lineptr = &linein[0];
  if (*lineptr == 12)  // if null line
  {
-  fstat = fgets(linein,120,infile);
+  fstat = fgets(linein,CHARSPER,infile);
   lineptr = &linein[0];
  }
 if ((fstat==NULL) || ( *lineptr == 3) || (*lineptr == 26))
@@ -342,7 +343,7 @@ int jj,k,j;
 void skippasteq()
 {
 
-  while((linein[lineindex] != '=') && (lineindex < 120))
+  while((linein[lineindex] != '=') && (lineindex < CHARSPER))
     {
       lineindex += 1;
     }
@@ -360,7 +361,7 @@ void skippasteq()
 void skippastplus()
 {
 
-  while((linein[lineindex] != '+') && (lineindex < 120))
+  while((linein[lineindex] != '+') && (lineindex < CHARSPER))
     {
       lineindex += 1;
     }
@@ -377,7 +378,7 @@ void skippastplus()
 
 void skipblanks()
  {
-  while ((linein[lineindex] == ' ') && (lineindex <120))
+  while ((linein[lineindex] == ' ') && (lineindex <CHARSPER))
     {
      lineindex += 1;
     }
@@ -385,7 +386,7 @@ void skipblanks()
 
 void skipblanksandslash()
  {
-   while (((linein[lineindex] == ' ') || (linein[lineindex] == '/' )) && (lineindex <120))
+   while (((linein[lineindex] == ' ') || (linein[lineindex] == '/' )) && (lineindex <CHARSPER))
     {
      lineindex += 1;
     }
@@ -395,7 +396,7 @@ void skipblanksandslash()
 void skipdashes()
  {
  
-  while ((linein[lineindex] == '-') && (lineindex <120))
+  while ((linein[lineindex] == '-') && (lineindex <CHARSPER))
     {
      lineindex += 1;
     }
@@ -2438,7 +2439,7 @@ int get_term_list()
 	    {
 	      strncpy(term,"ZZO",6);
  	    }
-          if ((isalpha(term[0])) && (isalpha(term[1])) && (isalpha(term[2])))
+       if ((isalpha(term[0])) && (isalpha(term[1])) && (isalpha(term[2])))
 	  {
 	   strncpy(term_array[termindex].bool,term,10);
 	   // printf("Put away term = %s \n",term);
@@ -2446,7 +2447,7 @@ int get_term_list()
           }
 	else
 	 {
-	  printf("Badly formed boolean term = %d%d%d in line = %s \n",term[0],
+	  printf("Badly formed boolean term = %c%c%c in line = %s \n",term[0],
 		 term[1],term[2],linein);
           exitnow(0);
          }	
@@ -2912,6 +2913,7 @@ void parse_dchip_rhs( char srcpin, int thispkgind)
 
           termcnt = get_term_list();    // into term array.bool
 
+	
           if (linein[lineindex] == '.')
             {
 	      groupend = TRUE;
@@ -2922,7 +2924,6 @@ void parse_dchip_rhs( char srcpin, int thispkgind)
 	      lineindex += 1;
             }
 
-         
           if (groupcnt == 0)
             {
              term_array[0].pin = 'H';
@@ -2951,7 +2952,6 @@ void parse_dchip_rhs( char srcpin, int thispkgind)
              term_array[2].pin = 'L';
              term_array[3].pin = 'K';
              thistcount = 4;
-
             }
      
            if (groupcnt == 3)
@@ -2976,17 +2976,17 @@ void parse_dchip_rhs( char srcpin, int thispkgind)
              thistcount = 2;
             }
 
+
           apply_terms_to_pkg(termcnt, term_array,thistcount, thispkgind); 
                                                    //  terms to pkg
 
           if (groupend == FALSE)
 	    {
-     
              groupcnt += 1;
             }
 	}
-    }
 
+    }
               
 }  // parse_dchip
 
@@ -6255,6 +6255,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
 
   if (ctype == 'D')
     {
+      
       if (pins[7][0] != 0 )  // F Pin
 	{
           if (pins[9][0] != 0 )  // H pin
@@ -8024,6 +8025,7 @@ void pkg_outb( int ipkgind, int brdnum )
 
   if (ctype == 'D') // F = HIMJLK + NMJLK + AJLK + DLK + EK +BC
     {
+     
       if (pins[7][0] != 0 )  // F
 	{
           firstgrp = TRUE;
@@ -8136,6 +8138,7 @@ void pkg_outb( int ipkgind, int brdnum )
           fprintf(outfile,"%s = ~%s . \n",flipcase(pins[7]),pins[7]);  // g = ~F
 
 	}  
+     
     }
 
   if (ctype == 'E')
@@ -9598,7 +9601,7 @@ int main (int argc,char *argv[])
     if (linein[0] == '-')
      {
 
-       // printf("Line in = %s \n",linein);
+       //printf("Line in = %s \n",linein);
 
       if (endoffile == FALSE)
        {
@@ -9771,8 +9774,8 @@ int main (int argc,char *argv[])
     exitnow(1);
    }
    
-  
   pkgs_out_boolean();
+
 
   // fclose(outfile);
 
@@ -9784,6 +9787,7 @@ int main (int argc,char *argv[])
     exitnow(1);
    }
 
+  
   pkgs_out_kicad();
 
   //fclose(outfile);
