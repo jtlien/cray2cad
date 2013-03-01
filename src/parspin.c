@@ -2831,16 +2831,6 @@ void parse_cchip_rhs( char srcpin, int thispkgind)
 	  //   printf("For c chip term_array[0] = %s \n", term_array[0].bool);
 	  //  printf("For c chip term_array[1] = %s \n", term_array[1].bool);
 
-          if (linein[lineindex] == '.')
-            {
-	      groupend = TRUE;
-            }
-
-          if(linein[lineindex] == '+')
-            {
-	      lineindex += 1;
-            }
-
          
           if (groupcnt == 0)
             {
@@ -2878,12 +2868,23 @@ void parse_cchip_rhs( char srcpin, int thispkgind)
              term_array[1].pin = 'C';
             }
      
-
           if (groupend == FALSE)
 	    {
              apply_terms_to_pkg(termcnt, term_array,2, thispkgind);  // 4 terms to pkg
              groupcnt += 1;
             }
+
+
+          if (linein[lineindex] == '.')
+            {
+	      groupend = TRUE;
+            }
+
+          if(linein[lineindex] == '+')
+            {
+	      lineindex += 1;
+            }
+
 	}
     }
 
@@ -5926,7 +5927,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
       
     }
 
-  ctype = pkgarray[ipkgind].chiptype;
+  ctype =pkgarray[ipkgind].chiptype;
 
   if (ctype == 'A')
     {
@@ -6178,10 +6179,9 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
 
   if (ctype == 'C')
     {
-      if (pins[7][0] != 0 )
+      if (pins[7][0] != 0 )  // F
         {
 	  fprintf(outfilea,"assign %s = ",pins[7]);
-
      
           if (pins[5][0] != 0 )  // F = DE+HI+JK+LM+NA+BC
             {
@@ -6824,7 +6824,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
 
           if (pins[9][0] != 0 )
 	    {
-             fprintf(outfileb,"  %s <= %s ; \n",
+             fprintf(outfileb," %s <= %s ; \n",
 	      pins[9],pins[11] );
    
              
@@ -6867,7 +6867,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
       if (pins[6][0] != 0 )
 	{
           
-          fprintf(outfileb,"  %s <= ",pins[6]);
+          fprintf(outfileb," %s <= ",pins[6]);
          
 	  if (pins[15][0] != 0 ) //M
 	    {
@@ -6911,7 +6911,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
       if (pins[7][0] != 0 )
 	{
           
-          fprintf(outfileb,"  %s <= ",pins[7]);
+          fprintf(outfileb," %s <= ",pins[7]);
          
 	  if (pins[15][0] != 0 ) //M
 	    {
@@ -6955,7 +6955,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
       if (pins[10][0] != 0 )
 	{
           
-          fprintf(outfileb,"  %s <= ",pins[10]);
+          fprintf(outfileb," %s <= ",pins[10]);
          
 	  if (pins[15][0] != 0 ) //M
 	    {
@@ -7076,53 +7076,89 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
     {
       if (pins[15][0] != 0)
 	{
-         fprintf(outfileb," %s <= %s & %s | ",
+	  if (pins[5][0] != 0 )
+	    {
+             fprintf(outfileb," %s <= %s & %s | ",
 	      pins[15],pins[14],pins[5]); // M=LD
-         if( pins[1][0] != 0 )
-	   {
-           fprintf(outfileb," %s & ~%s ; \n",
-	      pins[1],pins[5]); // Ad
-           }
-	 else     // handle case where second input not there
-	   {
-           fprintf(outfileb," ZZO & ~%s ; \n",
-	      pins[5]); // Ad
-           }
+              if( pins[1][0] != 0 )
+	       {
+               fprintf(outfileb," %s & %s ; \n",
+		       pins[1],flipcase(pins[5]) ); // Ad
+               }
+              else
+               {
+                fprintf(outfileb," ZZO & %s ; \n",
+			flipcase(pins[5]) ); // Ad
+               }
+    	    }
+	  else
+	    {
+	      // fprintf(outfileb," %s <= %s | ", pins[15],pins[14]); // M=LD
+              if( pins[1][0] != 0 )
+	       {
+		 fprintf(outfileb," %s <= %s; \n",pins[15],pins[1]); // Ad
+               }
+            }
 
-         fprintf(outfilea,"assign %s = ~%s;  //complement \n",flipcase(pins[15]),pins[15]);  // n=~M
+         fprintf(outfilea,"assign %s = ~%s;  //complement \n",
+                 flipcase(pins[15]),pins[15]);  // n=~M
         }
  
       if(pins[10][0] != 0 )
 	{
-        fprintf(outfileb," %s <= %s & %s | ",
+	  if (pins[5][0] != 0 )
+	   {
+            fprintf(outfileb," %s <= %s & %s | ",
 	      pins[10],pins[11],pins[5]); // I=JD
-        if (pins[8][0] != 0 )
-          {
-           fprintf(outfileb," %s & ~%s ; \n",
-	      pins[8],pins[5]); // Gd
-          }
-        else
-          {
-           fprintf(outfileb," ZZO & ~%s ; \n",
-	      pins[5]); // Gd
-          }
+            if (pins[8][0] != 0 )
+             {
+              fprintf(outfileb," %s & %s ; \n",
+		      pins[8],flipcase( pins[5]) ); // Gd
+	     }
+            else
+             {
+              fprintf(outfileb," ZZO & %s ; \n",
+		      flipcase(pins[5]) ); // Gd
+             }
+	   }
+	  else
+	   {
+	     // fprintf(outfileb," %s <= %s | ",pins[10],pins[11]); // I=JD
+            if (pins[8][0] != 0 )
+             {
+              fprintf(outfileb," %s <= %s ; \n",pins[10],pins[8]); // Gd
+	     }
+	   }
+                
         fprintf(outfilea,"assign %s = ~%s;  //complement \n",flipcase(pins[10]),pins[10]);  // h=~I
         }
 
       if (pins[7][0] != 0 )
 	{
-         fprintf(outfileb," %s <= %s & %s | ",
-	      pins[7],pins[2],pins[5]); // F=BD
-         if (pins[3][0] != 0 )
-           {
-            fprintf(outfileb," %s & ~%s ; \n",
-	      pins[3],pins[5]); // Cd
-	   }
-	 else
-           {
-            fprintf(outfileb," ZZO & ~%s ; \n",
-	      pins[5]); // Cd
-	   }
+	  if (pins[5][0] != 0)
+	    {
+             fprintf(outfileb," %s <= %s & %s | ",pins[7],
+              pins[2],pins[5]); // F=BD
+            if (pins[3][0] != 0 )
+             {
+              fprintf(outfileb," %s & %s ; \n",
+		      pins[3],flipcase(pins[5]) ); // Cd
+	      }
+            else
+             {
+              fprintf(outfileb," ZZO & %s ; \n",
+		      flipcase( pins[5]) ); // Cd
+	     }
+	    }
+	  else
+	    {
+	      //fprintf(outfileb," %s <= %s  | ",pins[7],pins[2]); // F=BD
+            if (pins[3][0] != 0 )
+             {
+              fprintf(outfileb," %s <= %s  ; \n",
+	        pins[7],pins[3]); // Cd
+	      }
+	    }
 
 	 fprintf(outfilea,"assign %s = ~%s;  //complement \n",flipcase(pins[7]),pins[7]);  // e=~F
      
@@ -7820,6 +7856,7 @@ void pkg_outb( int ipkgind, int brdnum )
   int unum;
   char ctype;
   char pins[20][10];
+  int noplus;
 
   char tlocstr[20];   // location string
   int firstgrp;
@@ -8008,14 +8045,195 @@ void pkg_outb( int ipkgind, int brdnum )
     {
       if (pins[7][0] != 0 )
 	{
+	 
         fprintf(outfile,"%s%cF ",tlocstr,ctype);
-        fprintf(outfile,"%s = %s %s + %s %s + %s %s + %s %s + %s %s + %s %s . \n",
-	      pins[7],pins[5],pins[6],
-           	       pins[16],pins[10],
-                       pins[11],pins[13],
-          	       pins[14],pins[15],
-                       pins[16],pins[1],
-	               pins[2],pins[1]);  // F = DE+NI+JK+LM+NA+BC
+        fprintf(outfile,"%s = ",pins[7]);
+
+        noplus = FALSE;
+        if (pins[5][0] != 0 )
+          {
+	    if (pins[6][0] != 0 )
+              {
+		fprintf(outfile,"%s %s ",pins[5],pins[6]);
+              }
+            else
+	      {
+                fprintf(outfile,"%s ",pins[5]);
+	      }
+	  }
+        else
+          {
+	    if (pins[6][0] != 0 )
+	      {
+                fprintf(outfile,"%s ", pins[6]);
+              }
+            else
+              {
+                noplus = TRUE;
+              }
+	  }
+        if (noplus == FALSE)
+          {
+            if (pins[9][0] != 0 )
+	      {
+	       fprintf(outfile," + ");
+	      }
+          }
+
+        noplus = FALSE;         
+        if (pins[9][0] != 0 )
+          {
+	    if (pins[10][0] != 0 )
+              {
+		fprintf(outfile,"%s %s ",pins[9],pins[10]);
+              }
+            else
+	      {
+                fprintf(outfile,"%s ",pins[9]);
+	      }
+	  }
+        else
+          {
+	    if (pins[10][0] != 0 )
+	      {
+                fprintf(outfile,"%s ", pins[10]);
+              }
+            else
+              {
+                noplus = TRUE;
+              }
+	  }
+        if (noplus == FALSE)
+          {
+            if (pins[11][0] != 0 )
+	      {
+	       fprintf(outfile," + ");
+              }
+          }
+
+        noplus = FALSE;         
+        if (pins[11][0] != 0 )
+          {
+	    if (pins[13][0] != 0 )
+              {
+		fprintf(outfile,"%s %s ",pins[11],pins[13]);
+              }
+            else
+	      {
+                fprintf(outfile,"%s ",pins[11]);
+	      }
+	  }
+        else
+          {
+	    if (pins[13][0] != 0 )
+	      {
+                fprintf(outfile,"%s ", pins[13]);
+              }
+            else
+              {
+                noplus = TRUE;
+              }
+	  }
+        if (noplus == FALSE)
+          {
+            if (pins[14][0] != 0 )
+	      {
+	       fprintf(outfile," + ");
+              }
+          }
+
+        noplus = FALSE;         
+
+        if (pins[14][0] != 0 )
+          {
+	    if (pins[15][0] != 0 )
+              {
+		fprintf(outfile,"%s %s ",pins[14],pins[15]);
+              }
+            else
+	      {
+                fprintf(outfile,"%s ",pins[14]);
+	      }
+	  }
+        else
+          {
+	    if (pins[15][0] != 0 )
+	      {
+                fprintf(outfile,"%s ", pins[15]);
+              }
+            else
+              {
+                noplus = TRUE;
+              }
+	  }
+        if (noplus == FALSE)
+          {
+            if (pins[16][0] != 0 )
+              {
+	    fprintf(outfile," + ");
+	      }
+          }
+
+        noplus = FALSE;         
+
+        if (pins[16][0] != 0 )
+          {
+	    if (pins[1][0] != 0 )
+              {
+		fprintf(outfile,"%s %s ",pins[16],pins[1]);
+              }
+            else
+	      {
+               fprintf(outfile,"%s ",pins[16]);
+	      }
+	  }
+        else
+          {
+	    if (pins[1][0] != 0 )
+	      {
+                fprintf(outfile,"%s ", pins[1]);
+              }
+            else
+              {
+                noplus = TRUE;
+              }
+	  }
+        if (noplus == FALSE)
+          {
+            if (pins[2][0] != 0 )
+	      {
+	       fprintf(outfile," + ");
+              }
+          }
+
+        noplus = FALSE;         
+
+        if (pins[2][0] != 0 )
+          {
+	    if (pins[3][0] != 0 )
+              {
+		fprintf(outfile,"%s %s ",pins[2],pins[3]);
+              }
+            else
+	      {
+               fprintf(outfile,"%s ",pins[2]);
+	      }
+	  }
+        else
+          {
+	    if (pins[3][0] != 0 )
+	      {
+                fprintf(outfile,"%s ", pins[3]);
+              }
+            else
+              {
+                noplus = TRUE;
+              }
+	  }
+      
+	 fprintf(outfile,";\n");
+      
+	         // F = DE+NI+JK+LM+NA+BC
 
         fprintf(outfile,"%s%cG ",tlocstr,ctype);
         fprintf(outfile,"%s = ~%s . \n",pins[8],pins[7]);  // g = ~F
@@ -9616,7 +9834,7 @@ int main (int argc,char *argv[])
         pinnum = pinxlate(srcpin);
 
      
-     // printf("In main - sourpin = %c \n", output_array[output_index].srcpin);
+     // printf("In main - sourcepin = %c \n", output_array[output_index].srcpin);
 
         pkgindex = output_array[output_index].pkgindex;
 
