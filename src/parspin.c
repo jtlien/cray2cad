@@ -1905,7 +1905,6 @@ void read_all_pkgs( FILE *pkgfile)
       pkgind = handleloc(pkglocs);
  
 
-
       if (pkgindex < MAXBOOL)
 	{
           strncpy(output_array[outputcnt].bool, interm,10);
@@ -1917,7 +1916,6 @@ void read_all_pkgs( FILE *pkgfile)
 
           output_array[outputcnt].srcbrd = pkgind/96;
          
- 
          pinxlate(outpin);
      
           if (chptype == 'S')
@@ -4966,8 +4964,7 @@ void parse_uchip_rhs( char srcpin, int thispkgind)
       while(( groupcnt < 4 ) && (groupend == FALSE))
         {
      
-
-        for(j=0; j < 3; j += 1)             // default to forced one 
+        for(j=0; j < 4; j += 1)             // default to forced one 
          {
 	  strncpy(term_array[j].bool,"ZZI",10);
          }
@@ -5047,7 +5044,6 @@ void parse_uchip_rhs( char srcpin, int thispkgind)
       while(( groupcnt < 4 ) && (groupend == FALSE))
         {
      
-
         for(j=0; j < 4; j += 1)             // default to forced one 
          {
 	  strncpy(term_array[j].bool,"ZZI",10);
@@ -5062,10 +5058,8 @@ void parse_uchip_rhs( char srcpin, int thispkgind)
           term_array[2].pin = 'm';
           term_array[3].pin = 'J';
         
-
           apply_terms_to_pkg(termcnt, term_array,4, thispkgind);  // 2 terms to pkg
          }
-
 
         if (groupcnt == 1 )
     	 {
@@ -7509,7 +7503,6 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
 
   if (ctype == 'U')
     {
-
       if (pins[7][0] != 0 )   // F
 	{
           if (pins[6][0] != 0 )
@@ -7526,7 +7519,6 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
 	        pins[5],pins[3],pins[2],pins[6]); // DCBE
 	    }
           else
-
 	    {
               fprintf(outfilea,"assign %s = %s & ~%s & ~%s  | ",
 	        pins[7],pins[1],pins[3],pins[2]); // F=Acb
@@ -7553,7 +7545,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
 	    {
               fprintf(outfilea,"assign %s = %s & ~%s & ~%s & %s | ",
 	        pins[10],pins[1],pins[14],pins[15],pins[11]); // I=AlmJ
-              fprintf(outfilea,"        %s & ~%s & %s & %s | \n",
+              fprintf(outfilea,"        %s & ~%s & %s & %s | ",
 	        pins[16],pins[14],pins[15],pins[11]); // + NlMJ
 
               fprintf(outfilea," %s & %s & ~%s & %s | ",
@@ -7566,7 +7558,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
 	    {
               fprintf(outfilea,"assign %s = %s & ~%s & ~%s  | ",
 	        pins[10],pins[1],pins[14],pins[15]); // I=Alm
-              fprintf(outfilea,"        %s & ~%s & %s  | \n",
+              fprintf(outfilea,"        %s & ~%s & %s  | ",
 	        pins[16],pins[14],pins[15]); // + NlM
 
               fprintf(outfilea," %s & %s & ~%s  | ",
