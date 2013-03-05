@@ -4290,7 +4290,6 @@ void parse_pchip_rhs( char srcpin, int thispkgind)
           apply_terms_to_pkg(termcnt, term_array,2, thispkgind);  // 2 terms to pkg
          }
 
-
         if (groupcnt == 1 )
     	 {
            term_array[0].pin = 'N';
@@ -9018,27 +9017,52 @@ void pkg_outb( int ipkgind, int brdnum )
 
   if (ctype == 'P')  // clocked
     {
-      if (pins[1][0] != 0 )
+      if (pins[2][0] != 0 )   // B
 	{
 
-	  if (pins[2][0] != 0 )
-	    {
+	  if (pins[15][0] != 0 )   // NI
+	   {
              fprintf(outfile,"%s%cB ",tlocstr,ctype);
 	      fprintf(outfile,"%s = %s %s ", 
 			 pins[2],pins[15],pins[10]);
             }
+	  else
+            {
+             fprintf(outfile,"%s%cB ",tlocstr,ctype);
+	      fprintf(outfile,"%s = %s ", 
+			 pins[2],pins[10]);
+            }
+	  
 
-           if (pins[16][0] != 0 )
-	       {
+	  if (pins[16][0] != 0 )   // MJ
+	     {
                  fprintf(outfile," + %s %s ", 
 			 pins[16],pins[11]);
+            }
+	  else
+            {
+	      if (pins[11][0] != 0 )
+                {
+                 fprintf(outfile," + %s ", 
+			 pins[11]);
+                }
                }
+	  
 
-           if (pins[1][0] != 0 )
-               {
+	  if (pins[1][0] != 0 )     // AL
+              {
 		 fprintf(outfile," + %s %s ",
                        pins[1],pins[14]);  // B=MI+NJ+AL
 	       }
+	   else
+              {
+                if (pins[14][0] != 0 )
+		  {
+		 fprintf(outfile," + %s ",
+                       pins[14]);  // B=MI+NJ+AL
+                  }
+	       }
+	  
 
 	     fprintf(outfile," . \n");
 
@@ -9049,23 +9073,48 @@ void pkg_outb( int ipkgind, int brdnum )
       if (pins[5][0] != 0 )
 	{
 
-	  if (pins[7][0] != 0 )
+	  if (pins[7][0] != 0 )	  // FI
 	    {
              fprintf(outfile,"%s%cD ",tlocstr,ctype);
 	      fprintf(outfile,"%s = %s %s ", 
 			 pins[5],pins[7],pins[10]);
             }
+           else
+	    {
+             fprintf(outfile,"%s%cD ",tlocstr,ctype);
+	      fprintf(outfile,"%s = %s ", 
+			 pins[5],pins[10]);
+            
+            }
 
-           if (pins[8][0] != 0 )
+	  if (pins[8][0] != 0 )  //  GJ
 	       {
                  fprintf(outfile," + %s %s ", 
 			 pins[8],pins[11]);
                }
+	   else
+	       {
+                 if(pins[11][0] != 0 )
+                   {
+                 fprintf(outfile," + %s ", 
+			pins[11]);
+		   }
+               }
 
-           if (pins[9][0] != 0 )
-               {
+
+	  if (pins[1][0] != 0)   // AL
+	     {
 		 fprintf(outfile," + %s %s ",
-                       pins[9],pins[14]);  // B=MI+NJ+AL
+                       pins[1],pins[14]);  // B=MI+NJ+AL
+	       }
+             else
+               {
+                 if (pins[1][0] != 0 )
+
+                   {
+		 fprintf(outfile," + %s ",
+                      pins[1]);  // B=MI+NJ+AL
+		   }
 	       }
 
 	     fprintf(outfile," . \n");
