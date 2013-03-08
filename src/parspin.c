@@ -6234,7 +6234,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
  	      print_veri_pingroupa(2,pin_list,ipkgind);
             }
 
-	  fprintf(outfilea," ; \n");
+	  fprintf(outfilea," ;\n");
 
        fprintf(outfilea,"assign %s = ~%s;  //complement \n",flipcase(pins[7]),pins[7]);  // g = ~F
 
@@ -8217,7 +8217,7 @@ void pkg_outb( int ipkgind, int brdnum )
               }
 	  }
       
-	 fprintf(outfile,";\n");
+	 fprintf(outfile," .\n");
       
 	         // F = DE+NI+JK+LM+NA+BC
 
@@ -9050,20 +9050,21 @@ void pkg_outb( int ipkgind, int brdnum )
     {
       if (pins[2][0] != 0 )   // B
 	{
-
 	  if (pins[15][0] != 0 )   // NI
 	   {
-             fprintf(outfile,"%s%cB ",tlocstr,ctype);
-	      fprintf(outfile,"%s = %s %s ", 
+             if (pins[10][0] != 0 )
+               {
+                fprintf(outfile,"%s%cB ",tlocstr,ctype);
+	          fprintf(outfile,"%s = %s %s ", 
 			 pins[2],pins[15],pins[10]);
-            }
-	  else
-            {
-             fprintf(outfile,"%s%cB ",tlocstr,ctype);
-	      fprintf(outfile,"%s = %s ", 
-		 pins[2],pins[10]);
-            }
-	  
+               }
+	      else
+               {
+               fprintf(outfile,"%s%cB ",tlocstr,ctype);
+	         fprintf(outfile,"%s = %s ", 
+	        	 pins[2],pins[15]);
+               }
+	   }
 
 	  if (pins[16][0] != 0 )   // MJ
 	     {
@@ -9116,7 +9117,7 @@ void pkg_outb( int ipkgind, int brdnum )
 	       {
                 fprintf(outfile,"%s%cD ",tlocstr,ctype);
 	        fprintf(outfile,"%s = %s ", 
-			 pins[5],pins[10]);
+			 pins[5],pins[7]);
                }
 	    }
 
@@ -9139,7 +9140,7 @@ void pkg_outb( int ipkgind, int brdnum )
 	       if (pins[14][0] != 0 )
 		 {
 		  fprintf(outfile," + %s %s ",
-                       pins[1],pins[14]);  // D=FI+GJ+HL
+                       pins[9],pins[14]);  // D=FI+GJ+HL
 	         }
                else
                 {
