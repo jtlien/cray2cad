@@ -8415,9 +8415,18 @@ void pkg_outb( int ipkgind, int brdnum )
 
       if (pins[6][0] != 0 )
         {
-         fprintf(outfile,"%s%cE ",tlocstr,ctype);
-         fprintf(outfile,"%s = ~%s + ~%s . \n",
-	      pins[6],pins[11],pins[13]);
+          if (pins[13][0] != 0 )
+	    {
+              fprintf(outfile,"%s%cE ",tlocstr,ctype);
+              fprintf(outfile,"%s = ~%s + ~%s . \n",
+	         pins[6],pins[11],pins[13]);
+	    }
+          else
+	    {
+              fprintf(outfile,"%s%cE ",tlocstr,ctype);
+              fprintf(outfile,"%s = ~%s . \n",
+	         pins[6],pins[11]);
+	    }
 	}
     
 
