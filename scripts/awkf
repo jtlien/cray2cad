@@ -1,0 +1,20 @@
+
+BEGIN { for(i = 0; i < 128; i++) ord[sprintf("%c",i)] = i }
+
+{ 
+
+   f2 = $2
+   split($2,b,";",seps)
+   split($2,c,"",seps)
+   v1 = ord[ c[1] ] - ord [ "A" ]
+   v2 = ord[ c[2] ] - ord [ "A" ]
+   v3 = ord[ c[3] ] - ord [ "A" ]
+
+   s1 = "define("
+   s2 = ",tf0["
+   s3 = "])dnl"
+   v4 = v1*26*26 + v2*26 + v3
+   
+
+   print s1 b[1] s2 v4 s3 
+}
