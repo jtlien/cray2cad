@@ -581,25 +581,31 @@ void handle_term(int itermcnt)
  //
  if (chip_type == 'G')
     {
-      if ( itermcnt == 1)  // jklcba + klcba + lcba
-	{
-          output_pin = 'I';
-          output_pinm = 'H';
-        }
-
-      if ( itermcnt == 2)   // lcba
-	{
-          output_pin = 'F';
-          output_pinm = 'G';
-        }
-
-      if ( itermcnt == 3)  // jkl
+      if ( itermcnt == 1)  // E,D = Lr + lR ; R = CBA
 	{
           output_pin = 'E';
           output_pinm = 'D';
         }
 
-      if ( itermcnt > 3)
+      if ( itermcnt == 2)   // F,G = Kq + kQ ; Q = LCBA
+	{
+          output_pin = 'F';
+          output_pinm = 'G';
+        }
+
+      if ( itermcnt == 3)  // I,H = Jp + jP ; ; P = KLCBA
+	{
+          output_pin = 'I';
+          output_pinm = 'H';
+        }
+
+      if ( itermcnt == 4)  // N,M = JKL
+	{
+          output_pin = 'N';
+          output_pinm = 'M';
+        }
+
+      if ( itermcnt > 4)
 	{
           printf("Error: Too many outputs for CHIP type = 'G'\n");
           printf("For line = %s \n", linein);

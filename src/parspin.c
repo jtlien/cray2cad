@@ -3213,15 +3213,15 @@ void parse_gchip_rhs( char srcpin, int thispkgind)
         if (groupcnt == 0 )
 	 {
           term_array[0].pin = 'L';
-          term_array[1].pin = 'L';
+          term_array[1].pin = '.';
 
           apply_terms_to_pkg(1, term_array,1, thispkgind);  // 2 terms to pkg
          }
 
         if (groupcnt == 1 )
     	 {
-           term_array[0].pin = 'L';
-           term_array[1].pin = 'D';
+           term_array[0].pin = '.';
+           term_array[1].pin = '.';
                  
           }
 
@@ -3283,7 +3283,7 @@ void parse_gchip_rhs( char srcpin, int thispkgind)
         if (groupcnt == 0 )
 	 {
           term_array[0].pin = 'K';
-          term_array[1].pin = 'K';
+          term_array[1].pin = '.';
 
           apply_terms_to_pkg(1, term_array,1, thispkgind);  // 2 terms to pkg
          }
@@ -3291,7 +3291,7 @@ void parse_gchip_rhs( char srcpin, int thispkgind)
         if (groupcnt == 1 )
     	 {
            term_array[0].pin = 'K';
-           term_array[1].pin = 'D';
+           term_array[1].pin = '.';
       
           }
 
@@ -3355,15 +3355,15 @@ void parse_gchip_rhs( char srcpin, int thispkgind)
         if (groupcnt == 0 )
 	 {
           term_array[0].pin = 'J';
-          term_array[1].pin = 'J';
+          term_array[1].pin = '.';
 
           apply_terms_to_pkg(1, term_array,1, thispkgind);  // 2 terms to pkg
          }
 
         if (groupcnt == 1 )
     	 {
-           term_array[0].pin = 'J';
-           term_array[1].pin = 'D';
+           term_array[0].pin = '.';
+           term_array[1].pin = '.';
       
           
           }
@@ -3403,7 +3403,51 @@ void parse_gchip_rhs( char srcpin, int thispkgind)
 
 	} // groups
      
-    }  // if F output pin
+    }  // if I output pin
+
+  if (srcpin == 'N')
+    {
+     
+      groupcnt = 0;
+      groupend = FALSE;
+
+      while(( groupcnt < 3 ) && (groupend == FALSE))
+        {
+     
+        for(j=0; j < 5; j += 1)             // default to forced one 
+         {
+	  strncpy(term_array[j].bool,"ZZI",10);
+         }
+
+        termcnt = get_term_list();    // into term array.bool
+
+	//  printf("In parse p , termcnt = %d terms = %s %s \n", termcnt,
+	//             term_array[0],
+	//         term_array[1]);
+
+        if (groupcnt == 0 )
+	 {
+          term_array[0].pin = 'J';
+          term_array[1].pin = 'K';
+          term_array[2].pin = 'L';
+          term_array[3].pin = 'M';
+
+          apply_terms_to_pkg(termcnt, term_array,4, thispkgind);  // 4 terms to pkg
+         }
+ 
+	if (linein[lineindex] == '.')
+	  {
+            groupend = TRUE;
+          }
+
+         if (groupend == FALSE)
+	  {
+           groupcnt += 1;
+          }
+
+	} // groups
+     
+    }  // if N output pin
               
 }  // parse_gchip
 
