@@ -7422,7 +7422,17 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
 
       if (pins[10][0] != 0 )  // I
 	{
-	fprintf(outfilea,"assign %s = %s & %s; \n", pins[10],pins[11],pins[13]);
+	  if (pins[13][0] != 0 )
+	    {
+	      fprintf(outfilea,"assign %s = %s & %s; \n", 
+                                   pins[10],pins[11],pins[13]);
+            }
+	  else
+	    {
+	      fprintf(outfilea,"assign %s = %s; \n", 
+                                   pins[10],pins[11]);
+            }
+
         fprintf(outfilea,"assign %s = ~%s; \n",flipcase(pins[10]),pins[10]);
        }
     }
@@ -9243,8 +9253,17 @@ void pkg_outb( int ipkgind, int brdnum )
       
       if (pins[10][0] != 0)
         {
-         fprintf(outfile,"%s%cI ",tlocstr,ctype);
-         fprintf(outfile,"%s = %s %s . \n",pins[10],pins[11],pins[13]);
+	  if (pins[13][0] != 0 )
+	    {
+             fprintf(outfile,"%s%cI ",tlocstr,ctype);
+             fprintf(outfile,"%s = %s %s . \n",pins[10],pins[11],pins[13]);
+            }
+          else
+	    {
+             fprintf(outfile,"%s%cI ",tlocstr,ctype);
+             fprintf(outfile,"%s = %s . \n",pins[10],pins[11]);
+            }
+
       // I = JK
 
          fprintf(outfile,"%s%cH ",tlocstr,ctype);
