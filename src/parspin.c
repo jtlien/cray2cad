@@ -647,6 +647,12 @@ void out_jumper_kicad( int brdnum, int jmpxval,int jmpyval, int jnum)
 char quotchar;
  FILE *outfile;
 
+ if (brdnum > 8 )
+   {
+     printf("Bad board number = %d \n",brdnum);
+     return;
+   }
+
  if (brdnum == 0)
    {
      outfile = outfile1;
