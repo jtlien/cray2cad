@@ -800,6 +800,16 @@ int pinxlate_s( char inchar)
     {
       retval = 16;
     }
+
+  if (inchar == 'O')
+    {
+      retval = 17;
+    }
+
+  if (inchar == 'P')
+    {
+      retval = 18;
+    }
   return(retval);
 
 } 
@@ -1766,6 +1776,98 @@ void apply_terms_to_pkg(int intermcnt, struct termstuff *term_array,
 } //  apply_terms_to_pkg
 
 //
+//  for each group of terms, apply the terms to the package 
+//                
+void apply_terms_to_pkg_s(int intermcnt, struct termstuff *term_array,
+                          int goodcnt,int thispkgind)
+{
+  int j;
+  char termpinch;
+  int termpin;
+  int lowerflag;
+
+  if (intermcnt > goodcnt)
+    {
+      printf("Too many terms in group in line %s \n",linein);
+      printf(" terms parsed %d expected = %d \n", intermcnt,goodcnt);
+    }
+
+  
+  for(j=0; j < intermcnt; j +=1 )
+    {
+      termpinch = term_array[j].pin;
+      lowerflag = FALSE;
+      if (islower(termpinch))
+        {
+          termpinch = toupper(termpinch);
+          lowerflag = TRUE;               // invert term_array value
+        }
+
+      termpin = pinxlate_s( termpinch);  // get integer for pin number
+
+      //printf("Termpin = %d from termchar = %c \n",termpin,termpinch);
+      if (termpin< MAXPINPERMOD)
+	{
+          if (strlen(pkgarray[thispkgind].pinterms[termpin])== 0) // nothing there yet
+	    {
+	      // printf("Setting a termpin %d in %d pkg with %s \n",
+	      // termpin, thispkgind,term_array[j].bool);
+
+	   strncpy(pkgarray[thispkgind].pinterms[termpin],term_array[j].bool,10);
+            }
+          else
+	    {
+              if (lowerflag)
+                {
+                  if (isupper( term_array[j].bool[0] ) )  // if upper
+		    {
+                      for(k=0; k < strlen(term_array[j].bool); k +=1)
+			{
+                          term_array[j].bool[k] = tolower( term_array[j].bool[k] );
+                        }
+		    }
+                  else
+                    {
+			
+                      for(k=0; k < strlen(term_array[j].bool); k +=1)
+			{
+                          term_array[j].bool[k] = toupper( term_array[j].bool[k] );
+                        }
+		    }				   
+		}
+
+              if (strncmp(pkgarray[thispkgind].pinterms[termpin],
+			  term_array[j].bool,10) == 0 )
+                {
+                }
+              else
+                {
+                  if (term_array[j].bool[0] == 0 ) // group has too few terms
+                    {
+		      strncpy(term_array[j].bool,"ZZI",10);  // make forced 
+                      strncpy(pkgarray[thispkgind].pinterms[termpin],"ZZI",10);
+                    }
+                  else
+		    {
+		      if (pkgarray[thispkgind].chiptype != 'U')
+			{
+		      printf("Pkg error for pkg %s with term %s overwriting %s for pin %d \n",
+                           pkgarray[thispkgind].locstr, 
+			     term_array[j].bool,
+                             pkgarray[thispkgind].pinterms[termpin],
+			     termpin);
+			}
+		    }
+                }
+            }
+
+        }
+
+    } 
+
+} //  apply_terms_to_pkg_s
+
+//
 //  Add a load to an bool output
 //
 void add_new_load(int outarrayind, char *loadstr, int brdnum, char chiptype, int pinnum,char pinchar)
@@ -2472,7 +2574,8 @@ int get_term_list()
 
 }
 
-
+// get term list separated by space or slash (/)
+//
 int get_term_listd()
 {
   int termindex;
@@ -4734,7 +4837,7 @@ void parse_schip_rhs( char srcpin, int thispkgind)
         {
      
 
-        for(j=0; j < 12; j += 1)             // default to forced one 
+        for(j=0; j < 20; j += 1)             // default to forced one 
          {
 	  strncpy(term_array[j].bool,"ZZI",10);
          }
@@ -4745,7 +4848,7 @@ void parse_schip_rhs( char srcpin, int thispkgind)
 	 {
           term_array[0].pin = 'P';
           
-          apply_terms_to_pkg(termcnt, term_array,1, thispkgind);  // 2 terms to pkg
+          apply_terms_to_pkg_s(termcnt, term_array,1, thispkgind);  // 2 terms to pkg
          }
 
         if (groupcnt == 1 )
@@ -4763,7 +4866,7 @@ void parse_schip_rhs( char srcpin, int thispkgind)
            term_array[10].pin = 'L';
            term_array[11].pin = 'M';
 
-           apply_terms_to_pkg(termcnt, term_array,12, thispkgind);  // 2 terms to pkg
+           apply_terms_to_pkg_s(termcnt, term_array,12, thispkgind);  // 2 terms to pkg
           }
 
         if (groupcnt == 2 )
@@ -4771,7 +4874,7 @@ void parse_schip_rhs( char srcpin, int thispkgind)
            term_array[0].pin = 'O';
            term_array[1].pin = 'N';
       
-           apply_terms_to_pkg(termcnt, term_array,2, thispkgind);  // 2 terms to pkg
+           apply_terms_to_pkg_s(termcnt, term_array,2, thispkgind);  // 2 terms to pkg
           }
 
 
@@ -7907,7 +8010,7 @@ void pkg_outb( int ipkgind, int brdnum )
   char tlocstr[20];   // location string
   int firstgrp;
 
-  for(i=1;i<17;i++)
+  for(i=1;i<19;i++)
     {
       strncpy(pins[i],pkgarray[ipkgind].pinterms[i],10);
       //  printf("For package = %d Pin = %s i = %d \n",ipkgind,pins[i],i);
@@ -8589,7 +8692,7 @@ void pkg_outb( int ipkgind, int brdnum )
 	      pins[8],pins[6],pins[5],pins[3],pins[2],pins[1],pins[16] );
 
       fprintf(outfile,"%s%cF ",tlocstr,ctype);
-      fprintf(outfile,"%s = ~%s; \n",flipcase(pins[8]),pins[8]);  // f = ~G
+      fprintf(outfile,"%s = ~%s . \n",flipcase(pins[8]),pins[8]);  // f = ~G
 	}
       
       if (pins[9][0] != 0 )   // H = JKLM
@@ -9280,10 +9383,10 @@ void pkg_outb( int ipkgind, int brdnum )
 
   if (ctype == 'R')
     {
-      if (pins[1][0] != 0 )  // B Pin
+      if (pins[2][0] != 0 )  // B Pin
 	{
 	  fprintf(outfile,"%s%cB ",tlocstr,ctype);   // BANM = EDJK; IHGF; CL
-      fprintf(outfile,"%s %s %s %s  = %s %s %s %s ; %s %s %s %s ; %s %s \n",
+      fprintf(outfile,"%s %s %s %s  = %s %s %s %s ; %s %s %s %s ; %s %s . \n",
 	      pins[2],pins[1],pins[16],pins[15],
 	      pins[6],pins[5],pins[11],pins[13],
               pins[10],pins[9],pins[8],pins[7], pins[3],pins[14]);
@@ -9294,14 +9397,14 @@ void pkg_outb( int ipkgind, int brdnum )
 
   if (ctype == 'S')
     {
-      if (pins[0][0] != 0 )  // A pin
+      if (pins[1][0] != 0 )  // A pin
 	{
 
 	  fprintf(outfile,"%s%cA ",tlocstr,ctype);   // A = P;BCDFGHIJKLM; ON .
-      fprintf(outfile,"%s  = %s ; %s %s %s %s %s %s %s %s %s %s %s %s ; %s %s \n",
+      fprintf(outfile,"%s  = %s ; %s %s %s %s %s %s %s %s %s %s %s %s ; %s %s .\n",
 	      pins[1],pins[18],pins[2],pins[3],
 	      pins[5],pins[6],pins[7],pins[8],
-              pins[9],pins[10],pins[11],pins[12],
+              pins[9],pins[10],pins[11],
               pins[13],pins[14],pins[15],pins[17],pins[16]);
         }
      
@@ -10198,7 +10301,7 @@ int main (int argc,char *argv[])
 
   fprintf(outfileb," end \n");
 
-  fclose(outfileb);
+  // fclose(outfileb);
   
   // jumper counts on each board
 
@@ -10444,7 +10547,7 @@ int main (int argc,char *argv[])
   fclose(outfile7);
   fclose(outfile8);
 
-  // printf("About to call out_all_kicadjmps \n");
+  //printf("About to call out_all_kicadjmps \n");
 
   out_all_kicadjmps();   // make the 8 netlist files for jumpers
  
@@ -10498,9 +10601,15 @@ int main (int argc,char *argv[])
                      interms_srt[k] );
     }
 
+  //printf("Closing outfile\n");
+
   fclose(outfile);
+  // printf("Closing outfilea\n");
   fclose(outfilea);
+  //printf("Closing outfileb\n");
   fclose(outfileb);
+  //printf("Closing outfilec\n");
+  fclose(outfilec);
 
  }  // end
 
