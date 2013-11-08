@@ -408,6 +408,9 @@ char *flipcase(char *instr)
 {
   
   int k;
+  char *outstr;
+
+  outstr = malloc(10);
 
   strncpy(outstr,instr,20);
 
