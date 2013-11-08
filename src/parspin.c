@@ -403,12 +403,15 @@ void skipdashes()
  }  /* end of skip dashes  */
 
 //
-//
+//  flip uppercase str, to lower case string and vice versa
 //
 char *flipcase(char *instr)
 {
   
   int k;
+  char *outstr;
+
+  outstr = malloc(10);
 
   strncpy(outstr,instr,20);
 
@@ -429,7 +432,7 @@ char *flipcase(char *instr)
     return(outstr);
 	
 } // flipcase
-		   
+
 //
 //   select output file by board number
 //
@@ -1720,6 +1723,24 @@ void apply_terms_to_pkg(int intermcnt, struct termstuff *term_array,
 	    {
 	      // printf("Setting a termpin %d in %d pkg with %s \n",
 	      // termpin, thispkgind,term_array[j].bool);
+           if (lowerflag)
+                {
+                  if (isupper( term_array[j].bool[0] ) )  // if upper
+		    {
+                      for(k=0; k < strlen(term_array[j].bool); k +=1)
+			{
+                          term_array[j].bool[k] = tolower( term_array[j].bool[k] );
+                        }
+		    }
+                  else
+                    {
+			
+                      for(k=0; k < strlen(term_array[j].bool); k +=1)
+			{
+                          term_array[j].bool[k] = toupper( term_array[j].bool[k] );
+                        }
+		    }				   
+		}
 
 	   strncpy(pkgarray[thispkgind].pinterms[termpin],term_array[j].bool,10);
             }
@@ -9456,13 +9477,14 @@ void pkg_outb( int ipkgind, int brdnum )
       if (pins[7][0] != 0 )
 	{
       fprintf(outfile,"%s%cF ",tlocstr,ctype);
-      fprintf(outfile,"%s = %s ~%s ~%s %s + ",
-	      pins[7],pins[1],pins[3],pins[2],pins[6]); // F=AcbE
-      fprintf(outfile,"%s ~%s %s %s + ",
-	      pins[16],pins[3],pins[2],pins[6]); // + NcBE
+      fprintf(outfile,"%s = %s %s %s %s + ",
+	      pins[7],pins[1],flipcase(pins[3]),flipcase(pins[2])
+                         ,pins[6]); // F=AcbE
+      fprintf(outfile,"%s %s %s %s + ",
+	      pins[16],flipcase(pins[3]),pins[2],pins[6]); // + NcBE
 
-      fprintf(outfile,"%s %s ~%s %s + ",
-	      pins[13],pins[3],pins[2],pins[6]); // KCbE
+      fprintf(outfile,"%s %s %s %s + ",
+	      pins[13],pins[3],flipcase(pins[2]),pins[6]); // KCbE
 
       fprintf(outfile,"%s %s %s %s . \n",
 	      pins[5],pins[3],pins[2],pins[6]); // DCbE
@@ -9474,13 +9496,14 @@ void pkg_outb( int ipkgind, int brdnum )
       if (pins[10][0] != 0 )
 	{
       fprintf(outfile,"%s%cI ",tlocstr,ctype);
-      fprintf(outfile,"%s = %s ~%s ~%s %s + ",
-	      pins[10],pins[1],pins[14],pins[15],pins[11]); // I=AlmJ
-      fprintf(outfile,"%s ~%s %s %s + ",
-	      pins[16],pins[14],pins[15],pins[11]); // + NlMJ
+      fprintf(outfile,"%s = %s %s %s %s + ",
+	      pins[10],pins[1],flipcase(pins[14]),
+	      flipcase(pins[15]),pins[11]); // I=AlmJ
+      fprintf(outfile,"%s %s %s %s + ",
+	      pins[16],flipcase(pins[14]),pins[15],pins[11]); // + NlMJ
 
-      fprintf(outfile,"%s %s ~%s %s + ",
-	      pins[13],pins[14],pins[15],pins[11]); // KLmJ
+      fprintf(outfile,"%s %s %s %s + ",
+	      pins[13],pins[14],flipcase(pins[15]),pins[11]); // KLmJ
 
       fprintf(outfile,"%s %s %s %s . \n",
 	      pins[5],pins[14],pins[15],pins[11]); // DLMJ
