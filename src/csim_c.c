@@ -2,6 +2,8 @@
 
 #include "stdio.h"
 #include "ctype.h"
+#include "string.h"
+#include "stdlib.h"
 
 #define MAXC    200             /* Maximum characters in mask */
 #define MAXI    200             /* Maximum characters in input line */
@@ -38,7 +40,67 @@ void cvttoken();
 void invtoken();
 void err();
 
-main(argc, argv)
+
+/****************************************/
+/*******     Function genmask     *******/
+/****************************************/
+
+int genmask()
+{
+  n = 0;
+
+  for ( c = 0; line[c] != '.'; c++ ){
+
+    if ( line[c] == ' ' ){
+
+      if ( line[c + 1] == '+' ){
+        mask[n] = '+';
+        n++;
+      }
+
+      if ( line[c + 1] == '=' ){
+        mask[n] = '=';
+        n++;
+      }
+
+      if ( line[c + 1] == '/' ){
+        mask[n] = '/';
+        n++;
+      }
+
+      if ( line[c + 1] == '-' ){
+        mask[n] = '-';
+        n++;
+      }
+
+      if ( line[c + 1] == '*' ){
+        mask[n] = '*';
+        n++;
+      }
+
+      if ( line[c + 1] == ';' ){
+        mask[n] = ';';
+        n++;
+      }
+
+      if ( isalpha( line[c+1] ) ){
+
+        if ( isupper( line[c+1] ) ){
+          mask[n] = 'V';
+          n++;
+        }
+
+        if ( islower( line[c+1] ) ){
+          mask[n] = 'v';
+          n++;
+        }
+      }
+    }
+  }
+  mask[n] = '\0';
+}
+
+int main(argc, argv)
 int argc;
 char *argv[];
 
@@ -1788,63 +1850,4 @@ void err(int errno)
   printf("errono = %d " ,errno);
   printf("%*c" , c + 1 , '\030' );
   exit(1);
-}
-
-/****************************************/
-/*******     Function genmask     *******/
-/****************************************/
-
-int genmask()
-{
-  n = 0;
-
-  for ( c = 0; line[c] != '.'; c++ ){
-
-    if ( line[c] == ' ' ){
-
-      if ( line[c + 1] == '+' ){
-        mask[n] = '+';
-        n++;
-      }
-
-      if ( line[c + 1] == '=' ){
-        mask[n] = '=';
-        n++;
-      }
-
-      if ( line[c + 1] == '/' ){
-        mask[n] = '/';
-        n++;
-      }
-
-      if ( line[c + 1] == '-' ){
-        mask[n] = '-';
-        n++;
-      }
-
-      if ( line[c + 1] == '*' ){
-        mask[n] = '*';
-        n++;
-      }
-
-      if ( line[c + 1] == ';' ){
-        mask[n] = ';';
-        n++;
-      }
-
-      if ( isalpha( line[c+1] ) ){
-
-        if ( isupper( line[c+1] ) ){
-          mask[n] = 'V';
-          n++;
-        }
-
-        if ( islower( line[c+1] ) ){
-          mask[n] = 'v';
-          n++;
-        }
-      }
-    }
-  }
-  mask[n] = '\0';
 }

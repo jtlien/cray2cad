@@ -2,6 +2,7 @@
 #include "stdio.h"
 #include "string.h"
 #include "stdlib.h"
+#include "ctype.h"
 
 #define EOLN '\n'
 #define CHARSPER 300
@@ -28,7 +29,7 @@ FILE *outfile7,*outfile8;
 FILE *outfilea,*outfileb;
 FILE *outfilec;
 
-
+int find_in_outputs(char *inbool);
 
 /*******************************************************************/
 /*                                                                 */

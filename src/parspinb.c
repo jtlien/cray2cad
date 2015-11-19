@@ -2,6 +2,7 @@
 #include "stdio.h"
 #include "string.h"
 #include "stdlib.h"
+#include "ctype.h"
 
 #define EOLN '\n'
 #define MAXCIRC 2024

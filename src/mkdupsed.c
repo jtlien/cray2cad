@@ -1,5 +1,7 @@
 #include "stdio.h"
+#include "string.h"
 #include "ctype.h"
+
 #define LPAREN 40
 #define lparen 40
 #define TRUE 1

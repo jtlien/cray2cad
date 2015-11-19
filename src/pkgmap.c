@@ -1,4 +1,5 @@
 #include "stdio.h"
+#include "ctype.h"
 #include "string.h"
 
 #define EOLN '\n'
@@ -331,7 +332,7 @@ lineindex+= 1;
  
 }
 
-isalphanum(c)
+int isalphanum(c)
 char *c;
 {
  if (isalpha(c) || isdigit(c))
@@ -1230,7 +1231,7 @@ void handle_term_list()
 //
 //
 //
-rdinuptodot()
+void rdinuptodot()
 
 
 {
@@ -1303,7 +1304,7 @@ int main (int argc,char *argv[])
       boolusedarray[i]=0;
     }
 
-  if (debug) { printf("File open ok %u \n",file1); }
+  //  if (debug) { printf("File open ok %u \n",file1); }
   endoffile = FALSE;
   linenum = 1;
   linein[0] = 0;
