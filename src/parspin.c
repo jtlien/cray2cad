@@ -6137,7 +6137,7 @@ void pkg_outv( int ipkgind, int brdnum, char *inlocstr)
 
       if (pins[8][0] != 0 )  // G
         {
-          fprintf(outfilea,"assign %s = ",pins[5]);
+          fprintf(outfilea,"assign %s = ",pins[8]);
 
 	  if ( pins[13][0] != 0 )   // G = KLMN
 	    {
